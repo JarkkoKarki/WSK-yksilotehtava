@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opiskelijaravintolat</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Opiskelijaravintolat</h1>
+      <div class="login">
+        <a href="login.html">Kirjaudu</a>
+        <a href="register.html">Rekisteröidy</a>
+      </div>
+    </header>
+    <main>
+      <section class="filters">
+        <h2>Suodata ravintoloita</h2>
+        <form id="filter-form">
+          <label for="city">Kaupunki:</label>
+          <select id="city" name="city">
+            <option value="">Kaikki</option>
+            <option value="Helsinki">Helsinki</option>
+            <option value="Espoo">Espoo</option>
+            <option value="Vantaa">Vantaa</option>
+          </select>
+
+          <label for="provider">Palveluntarjoaja:</label>
+          <select id="provider" name="provider">
+            <option value="">Kaikki</option>
+            <option value="Provider1">1</option>
+            <option value="Provider2">2</option>
+          </select>
+
+          <button type="button" onclick="filterRestaurants()">Suodata</button>
+        </form>
+      </section>
+
+      <section class="restaurant-list">
+        <h2>Ravintolat</h2>
+        <div class="restaurant" data-city="Helsinki" data-provider="Provider1">
+          <h3>Ravintola 1</h3>
+          <button onclick="showMenu('day')">Päivän ruokalista</button>
+          <button onclick="showMenu('week')">Viikon ruokalista</button>
+          <button onclick="toggleFavorite(this)">⭐</button>
+        </div>
+        <div class="restaurant" data-city="Espoo" data-provider="Provider2">
+          <h3>Ravintola 2</h3>
+          <button onclick="showMenu('day')">Päivän ruokalista</button>
+          <button onclick="showMenu('week')">Viikon ruokalista</button>
+          <button onclick="toggleFavorite(this)">⭐</button>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>Opiskelijaravintolat</p>
+    </footer>
+  </body>
+</html>
