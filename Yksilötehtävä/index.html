@@ -33,23 +33,30 @@
             <option value="Provider2">2</option>
           </select>
 
-          <button type="button" onclick="filterRestaurants()">Suodata</button>
+          <button type="button" onclick="">Suodata</button>
         </form>
       </section>
-
       <section class="restaurant-list">
         <h2>Ravintolat</h2>
         <div class="restaurant" data-city="Helsinki" data-provider="Provider1">
           <h3>Ravintola 1</h3>
-          <button onclick="showMenu('day')">Päivän ruokalista</button>
-          <button onclick="showMenu('week')">Viikon ruokalista</button>
-          <button onclick="toggleFavorite(this)">⭐</button>
+          <button onclick="">
+            <a href="./menu.html">Päivän ruokalista</a>
+          </button>
+          <button onclick="">
+            <a href="./menu.html">Viikon ruokalista</a>
+          </button>
+          <button onclick="">⭐</button>
         </div>
         <div class="restaurant" data-city="Espoo" data-provider="Provider2">
           <h3>Ravintola 2</h3>
-          <button onclick="showMenu('day')">Päivän ruokalista</button>
-          <button onclick="showMenu('week')">Viikon ruokalista</button>
-          <button onclick="toggleFavorite(this)">⭐</button>
+          <button onclick="">
+            <a href="./menu.html">Päivän ruokalista</a>
+          </button>
+          <button onclick="">
+            <a href="./menu.html">Viikon ruokalista</a>
+          </button>
+          <button onclick="">⭐</button>
         </div>
       </section>
     </main>
