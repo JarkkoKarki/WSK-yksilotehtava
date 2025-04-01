@@ -5,6 +5,10 @@ body {
   background-color: #f6f1de;
 }
 
+#map {
+  height: 180px;
+}
+
 header {
   background-color: #8ab2a6;
   color: white;
@@ -75,15 +79,9 @@ main {
   background-color: #3e3f5b;
 }
 
-.restaurant-list {
-  margin: 1rem 0;
-}
 .restaurant {
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: white;
-  border: 1px solid #8ab2a6;
-  border-radius: 5px;
   width: 20%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -157,4 +155,51 @@ main {
 }
 .form-container .link:hover {
   text-decoration: underline;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 0.5em;
+  overflow: hidden;
+  width: 100%;
+}
+
+th {
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #ccc;
+  font-weight: bold;
+  padding: 0.75em 1em;
+  text-align: left;
+  color: #333;
+  width: 100%;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+  padding: 0.75em 1em;
+  text-align: left;
+  color: #555;
+  width: 100%;
+}
+
+tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+tr:hover {
+  background-color: #eaeaea;
+}
+
+th:first-child,
+td:first-child {
+  border-left: none;
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
 }

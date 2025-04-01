@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Opiskelijaravintolat</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script type="module" src="script.js" defer></script>
   </head>
   <body>
     <header>
@@ -15,6 +27,7 @@
       </div>
     </header>
     <main>
+      <div id="map"></div>
       <section class="filters">
         <h2>Suodata ravintoloita</h2>
         <form id="filter-form">
@@ -28,9 +41,9 @@
 
           <label for="provider">Palveluntarjoaja:</label>
           <select id="provider" name="provider">
-            <option value="">Kaikki</option>
-            <option value="Provider1">1</option>
-            <option value="Provider2">2</option>
+            <option value="all" id="show-all">Kaikki</option>
+            <option value="sodexo" id="sodexo">sodexo</option>
+            <option value="Compass Group" id="compass">compass</option>
           </select>
 
           <button type="button" onclick="filterRestaurants()">Suodata</button>
@@ -39,18 +52,7 @@
 
       <section class="restaurant-list">
         <h2>Ravintolat</h2>
-        <div class="restaurant" data-city="Helsinki" data-provider="Provider1">
-          <h3>Ravintola 1</h3>
-          <button onclick="showMenu('day')">Päivän ruokalista</button>
-          <button onclick="showMenu('week')">Viikon ruokalista</button>
-          <button onclick="toggleFavorite(this)">⭐</button>
-        </div>
-        <div class="restaurant" data-city="Espoo" data-provider="Provider2">
-          <h3>Ravintola 2</h3>
-          <button onclick="showMenu('day')">Päivän ruokalista</button>
-          <button onclick="showMenu('week')">Viikon ruokalista</button>
-          <button onclick="toggleFavorite(this)">⭐</button>
-        </div>
+        <table class="restaurant" , id="target"></table>
       </section>
     </main>
     <footer>
