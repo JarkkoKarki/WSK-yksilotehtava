@@ -27,10 +27,9 @@
       </div>
     </header>
     <main>
-      <div id="map"></div>
       <section class="filters">
-        <h2>Suodata ravintoloita</h2>
         <form id="filter-form">
+          <h2>Suodata ravintoloita</h2>
           <label for="city">Kaupunki:</label>
           <select id="city" name="city">
             <option value="">Kaikki</option>
@@ -49,8 +48,13 @@
           <button type="button" onclick="">Suodata</button>
         </form>
       </section>
+      <div id="map"></div>
+
       <section class="restaurant-list">
-        <h2>Ravintolat</h2>
+        <div class="restaurant-div">
+          <h2>Ravintolat</h2>
+          <h3>Search</h3>
+        </div>
         <table class="restaurant" , id="target"></table>
       </section>
     </main>
