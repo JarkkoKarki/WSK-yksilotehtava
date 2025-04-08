@@ -17,7 +17,7 @@ const options = {
 function success(pos) {
   const crd = pos.coords;
   console.log(crd);
-  map = L.map('map').setView([crd.latitude, crd.longitude], 10.5);
+  map = L.map('map').setView([crd.latitude, crd.longitude], 12);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution:
@@ -51,7 +51,6 @@ const RestaurantRow = ({name, address, city}, tr) => {
   //kaupunkisolu
   const cityTd = document.createElement('td');
   cityTd.innerText = city;
-
   //lisÃ¤tÃ¤Ã¤n solut riviin
   tr.append(nameTd, addressTd, cityTd);
 };
@@ -123,10 +122,14 @@ const sortByName = ({name}, {name: bName}) =>
 let markers = [];
 
 function clearMarkers() {
+  console.log('Clearing markers:', markers.length);
   markers.forEach((marker) => {
-    map.removeLayer(marker);
+    if (map.hasLayer(marker)) {
+      map.removeLayer(marker);
+    }
   });
   markers = [];
+  console.log('Markers cleared. Remaining:', markers.length);
 }
 const sortRestaurants = () => {
   restaurants.sort(sortByName);
@@ -204,4 +207,5 @@ export default {
   success,
   options,
   error,
+  restaurants,
 };
