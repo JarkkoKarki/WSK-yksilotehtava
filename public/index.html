@@ -33,7 +33,7 @@
           <h2>Suodata ravintoloita</h2>
           <label for="city">Kaupunki:</label>
           <select id="city" name="city">
-            <option value="">Kaikki</option>
+            <option value="all">Kaikki</option>
             <option value="Helsinki">Helsinki</option>
             <option value="Espoo">Espoo</option>
             <option value="Vantaa">Vantaa</option>
@@ -46,10 +46,18 @@
             <option value="Compass Group" id="compass">compass</option>
           </select>
 
-          <button type="button" onclick="">Suodata</button>
+          <label for="menu">Ruokalistan:</label>
+          <select id="menu" name="menu">
+            <option value="viikko" id="viikko">viikko</option>
+            <option value="päivä" id="päivä">päivä</option>
+          </select>
+
+          <div id="day"></div>
+
+          <button type="button" id="submit">Suodata</button>
         </form>
       </section>
-      <div id="map"></div>
+      <div id="map"><dialog id="modal"></dialog></div>
 
       <section class="restaurant-list">
         <div class="restaurant-div">

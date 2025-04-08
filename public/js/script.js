@@ -3,7 +3,7 @@ import components from './components.js';
 document.addEventListener('DOMContentLoaded', () => {
   const main = async () => {
     try {
-      navigator.geolocation.getCurrentPosition(
+      await navigator.geolocation.getCurrentPosition(
         components.success,
         components.error,
         components.options
