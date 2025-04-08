@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kirjaudu</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./css/style2.css" />
+    <script src="./js/login.js" defer></script>
   </head>
-  <body>
-    <div class="form-container">
+  <body class="body">
+    <div class="form-container1">
       <h1>Kirjaudu</h1>
-      <form action="#" method="POST">
+      <form id="login-form">
         <label for="username">Käyttäjätunnus</label>
         <input
           type="text"
@@ -31,6 +32,7 @@
         <button type="submit">Kirjaudu</button>
       </form>
       <a href="register.html" class="link">Rekisteröidy</a>
+      <a id="guest-button" class="guest-button">Jatka vieraana</a>
     </div>
   </body>
 </html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profiili</title>
+    <link rel="stylesheet" href="./css/style2.css" />
+    <script src="./js/profile.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Profiili</h1>
+      <button class="logout">Kirjaudu ulos</button>
+    </header>
+    <main>
+      <section>
+        <h2>Tervetuloa, <span id="username"></span>!</h2>
+        <form id="update-profile-form">
+          <label for="profile-picture">Lisää profiilikuva:</label>
+          <input type="file" id="profile-picture" name="profile-picture" />
+
+          <label for="favorite-restaurant">Valitse suosikkiravintola:</label>
+          <select id="favorite-restaurant">
+            <option value="Ravintola 1">Ravintola 1</option>
+            <option value="Ravintola 2">Ravintola 2</option>
+            <option value="Ravintola 3">Ravintola 3</option>
+          </select>
+
+          <button type="submit">Päivitä tiedot</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

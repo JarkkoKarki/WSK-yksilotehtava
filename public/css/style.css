@@ -132,7 +132,7 @@ main {
 }
 
 .table-container {
-  max-height: 400px;
+  height: 60%;
   overflow-y: auto;
   margin: 0 auto;
   border: 1px solid #444;
@@ -141,19 +141,6 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   scrollbar-width: thin;
   scrollbar-color: #ff6f61 #292929;
-}
-
-.table-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background-color: #ff6f61;
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-track {
-  background-color: #292929;
 }
 
 #target {
@@ -196,4 +183,88 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .login {
+    top: 1rem;
+    right: 0.5rem;
+  }
+
+  main {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .filters {
+    max-width: 100%;
+    width: auto;
+    margin-bottom: 1rem;
+  }
+
+  #map {
+    width: 100%;
+    height: 300px;
+    z-index: -5;
+  }
+
+  .restaurant-list {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .table-container {
+    height: auto;
+    max-height: 300px;
+  }
+
+  footer {
+    z-index: 10;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    overflow: auto;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .filters h2 {
+    font-size: 1rem;
+  }
+
+  .filters select,
+  .filters button {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+
+  #map {
+    height: 250px;
+    z-index: -5;
+  }
+
+  .restaurant-div h2 {
+    font-size: 1.2rem;
+  }
+
+  .restaurant-div h3 {
+    font-size: 1rem;
+  }
+
+  #target th,
+  #target td {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  footer {
+    z-index: 10;
+  }
 }

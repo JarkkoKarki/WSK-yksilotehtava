@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
       components.sortRestaurants();
       components.createTable();
     } catch (error) {
-      console.error(error.message);
+      console.error('An error occurred:', error.message);
+      alert('Refresh page');
     }
   };
 

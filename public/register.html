@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rekisteröidy</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./css/style2.css" />
   </head>
-  <body>
-    <div class="form-container">
+  <body class="body">
+    <div class="form-container1">
       <h1>Rekisteröidy</h1>
-      <form action="#" method="POST">
+      <form id="register-form" action="#" method="POST">
         <label for="username">Käyttäjätunnus</label>
         <input
           type="text"
@@ -49,6 +49,8 @@
         <button type="submit">Rekisteröidy</button>
       </form>
       <a href="login.html" class="link">Kirjaudu sisään</a>
+      <a id="guest-button" class="guest-button">Jatka vieraana</a>
     </div>
+    <script src="../register.js" defer></script>
   </body>
 </html>

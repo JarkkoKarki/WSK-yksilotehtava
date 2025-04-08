@@ -1,4 +1,4 @@
-import {fetchData} from '../lib/fetchData.js';
+import {fetchData} from '../../lib/fetchData.js';
 import {apiUrl} from './variables.js';
 import {sortByName} from './utils.js';
 
@@ -17,22 +17,17 @@ const options = {
 function success(pos) {
   const crd = pos.coords;
   console.log(crd);
-  map = L.map('map').setView([crd.latitude, crd.longitude], 12);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
 
-  for (const restaurant of restaurants) {
-    const marker = L.marker([
-      restaurant.location.coordinates[1],
-      restaurant.location.coordinates[0],
-    ])
-      .addTo(map)
-      .bindPopup(restaurant.name);
-    marker.on('click', () => addInfoHtml(restaurant));
+  if (!map) {
+    map = L.map('map').setView([crd.latitude, crd.longitude], 12);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
   }
+
+  updateMapMarkers();
 }
 
 function error(err) {
@@ -135,12 +130,32 @@ const sortRestaurants = () => {
   restaurants.sort(sortByName);
 };
 
+function updateMapMarkers() {
+  if (!map) {
+    console.error('Map is not initialized.');
+    return;
+  }
+
+  clearMarkers();
+
+  for (const restaurant of restaurants) {
+    const marker = L.marker([
+      restaurant.location.coordinates[1],
+      restaurant.location.coordinates[0],
+    ])
+      .addTo(map)
+      .bindPopup(restaurant.name);
+    marker.on('click', () => addInfoHtml(restaurant));
+    markers.push(marker);
+  }
+}
+
 const createTable = (filteredRestaurants = restaurants) => {
   taulukko.innerHTML = '';
   clearMarkers();
   if (filteredRestaurants.length === 0) {
     const noDataMessage = document.createElement('p');
-    noDataMessage.innerText = 'No restaurants found';
+    noDataMessage.innerText = 'Use VPN';
     taulukko.append(noDataMessage);
     return;
   }
