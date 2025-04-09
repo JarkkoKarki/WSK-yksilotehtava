@@ -32,11 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (response.ok) {
-          alert('Rekisteröinti onnistui! Voit nyt kirjautua sisään.');
-          window.location.href = 'index.html';
-          const error = await response.json();
-          alert(`Virhe rekisteröinnissä: ${error.message}`);
-          window.location.href = 'index.html';
+          await response.json();
+          window.location.href = 'login.html';
         }
       } catch (error) {
         console.error('Error during registration:', error);

@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           const data = await response.json();
-          alert('Kirjautuminen onnistui!');
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', username);
           window.location.href = 'index.html';
