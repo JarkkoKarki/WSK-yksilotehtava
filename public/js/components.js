@@ -245,7 +245,12 @@ const createTable = (filteredRestaurants = restaurants) => {
         marker.openPopup();
 
         selectedRestaurant = restaurant;
-
+        const coursesResponse = await getDailyMenu(restaurant._id, 'fi');
+        const menuHtml = createMenuHtml(coursesResponse.courses);
+        modal.innerHTML = '';
+        restaurantModal(restaurant, modal);
+        modal.insertAdjacentHTML('beforeend', menuHtml);
+        modal.showModal();
         console.log(`Selected restaurant: ${restaurant.name}`);
       } catch (error) {
         console.error(error.message);
@@ -266,87 +271,6 @@ const createTable = (filteredRestaurants = restaurants) => {
     markers.push(marker);
   });
 };
-
-document.querySelector('#menu').addEventListener('change', async (event) => {
-  const selectedMenuType = event.target.value;
-  const dayContainer = document.querySelector('#day');
-  dayContainer.innerHTML = '';
-
-  if (!selectedRestaurant) {
-    alert('Please select a restaurant first.');
-    return;
-  }
-
-  try {
-    if (selectedMenuType === 'päivä') {
-      const selectElement = document.createElement('select');
-      selectElement.id = 'day-select';
-      selectElement.name = 'day';
-
-      const days = [
-        {value: 'Maanantai', text: 'Maanantai'},
-        {value: 'Tiistai', text: 'Tiistai'},
-        {value: 'Keskiviikko', text: 'Keskiviikko'},
-        {value: 'Torstai', text: 'Torstai'},
-        {value: 'Perjantai', text: 'Perjantai'},
-        {value: 'Lauantai', text: 'Lauantai'},
-        {value: 'Sunnuntai', text: 'Sunnuntai'},
-      ];
-
-      days.forEach((day) => {
-        const option = document.createElement('option');
-        option.value = day.value;
-        option.textContent = day.text;
-        selectElement.appendChild(option);
-      });
-
-      dayContainer.appendChild(document.querySelector('#menu'));
-
-      selectElement.addEventListener('change', async (dayEvent) => {
-        const selectedDay = dayEvent.target.value;
-        console.log('Selected day:', selectedDay);
-
-        try {
-          const dailyMenu = await getDailyMenu(selectedRestaurant._id, 'fi');
-          if (!dailyMenu || !dailyMenu.courses) {
-            throw new Error('Invalid daily menu data');
-          }
-
-          const filteredCourses = dailyMenu.courses.filter(
-            (course) => course.day === selectedDay
-          );
-
-          const menuHtmlContent = createMenuHtml(filteredCourses);
-          dayContainer.innerHTML = menuHtmlContent;
-        } catch (error) {
-          console.error('Error fetching daily menu:', error.message);
-          alert('Failed to fetch the daily menu. Please try again.');
-        }
-      });
-    } else if (selectedMenuType === 'viikko') {
-      try {
-        const weeklyMenu = await getWeeklyMenu(selectedRestaurant._id, 'fi');
-        if (!weeklyMenu || !weeklyMenu.days) {
-          throw new Error('Invalid weekly menu data');
-        }
-
-        const weeklyMenuHtml = weeklyMenu.days
-          .map((day) => {
-            const dayCoursesHtml = createMenuHtml(day.courses);
-            return `<h3>${day.date}</h3>${dayCoursesHtml}`;
-          })
-          .join('');
-        dayContainer.innerHTML = weeklyMenuHtml;
-      } catch (error) {
-        console.error('Error fetching weekly menu:', error.message);
-        alert('Failed to fetch the weekly menu. Please try again.');
-      }
-    }
-  } catch (error) {
-    console.error('Error handling menu selection:', error.message);
-    alert('An error occurred. Please try again.');
-  }
-});
 
 export default {
   getRestaurants,
