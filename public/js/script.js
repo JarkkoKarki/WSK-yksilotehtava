@@ -3,11 +3,18 @@ import components from './components.js';
 document.addEventListener('DOMContentLoaded', () => {
   const main = async () => {
     try {
-      await navigator.geolocation.getCurrentPosition(
-        components.success,
-        components.error,
-        components.options
-      );
+      const getPosition = () =>
+        new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            resolve,
+            reject,
+            components.options
+          );
+        });
+
+      const position = await getPosition();
+      components.success(position);
+
       await components.getRestaurants();
       components.sortRestaurants();
       components.createTable();

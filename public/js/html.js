@@ -1,13 +1,83 @@
-export function menuHtml(courses) {
-  let html = '';
-  for (const {name, price, diets} of courses) {
-    html += `
-  <article class="course">
-      <p><strong>${name}</strong>,
-      Hinta: ${price} â‚¬,
-      Allergeenit: ${diets}</p>
-  </article>
-  `;
+export function menuHtml(courses, day) {
+  try {
+    if (courses.name) {
+      let html = '';
+      console.log('html ', courses);
+      const {name, price, diets} = courses;
+      html += `
+    <article class="course">
+        <p><strong>${name}</strong>,
+        Hinta: ${price},
+        Allergeenit: ${diets}</p>
+    </article>
+    `;
+      return html;
+    }
+  } catch (error) {
+    console.log('Menu not available');
+    createErrorHtml();
   }
+}
+
+export function chooseDayModal() {
+  let html = '';
+  html += `
+  <div style="display: flex; justify-content: center; align-content: center;" class="modal">
+    <div style="display: flex; justify-content: center; align-content: center; flex-direction: column; width:40%;" class="modal-content">
+      <span class="close"><button id="closeModal">Sulje</button></span>
+      <h2>Valitse päivä</h2>
+      <p>Valitse päivä, jolle haluat nähdä ruokalistan:</p>
+      <button style="margin: 2rem;" class="day" id="submitDateWeek" value="7">Viikko</button>
+      <button class="day" id="submitDateMonday" value="0">Maanantai</button>
+      <button class="day" id="submitDateTuesday" value="1">Tiistai</button>
+      <button class="day" id="submitDateWednesday" value="2">Keskiviikko</button>
+      <button class="day" id="submitDateThursday" value="3">Torstai</button>
+      <button class="day" id="submitDateFriday" value="4">Perjantai</button>
+      <button class="day" id="submitDateSaturday" value="5">Lauantai</button>
+      <button class="day" id="submitDateSunday" value="6">Sunnuntai</button>
+    </div>
+  </div>
+  `;
   return html;
 }
+
+export const menuWeekHtml = (courses) => {
+  if (!courses || courses.length === 0) {
+    createErrorHtml();
+    return '<p>Ei viikkoruokalistaa saatavilla.</p>';
+  }
+
+  let html = '';
+  let num = 0;
+
+  for (const course of courses) {
+    if (!course || !course.courses) {
+      console.warn(`Invalid course data at index ${num}:`, course);
+      continue; // Skip invalid entries
+    }
+
+    for (const {name, price, diets} of course.courses) {
+      html += `
+      <article class="course">
+          <p><strong>${name}</strong>,
+          Hinta: ${price},
+          Allergeenit: ${diets}</p>
+      </article>
+      `;
+    }
+    num++;
+  }
+
+  return html;
+};
+
+export const createErrorHtml = () => {
+  let html = '';
+  html += `
+  <div style="display: flex; justify-content: center; align-content: center;  class="modal">
+    <div style="display: flex; justify-content: center; align-content: center; flex-direction: column; width:40%;" class="modal-content">
+      <p>Ei ruokalistaa saatavilla.</p>
+    </div>
+    `;
+  return html;
+};

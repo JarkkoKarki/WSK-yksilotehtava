@@ -1,7 +1,12 @@
 import {fetchData} from '../../lib/fetchData.js';
 import {apiUrl} from './variables.js';
 import {sortByName} from './utils.js';
-import {menuHtml} from './html.js';
+import {
+  chooseDayModal,
+  menuHtml,
+  menuWeekHtml,
+  createErrorHtml,
+} from './html.js';
 
 const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
@@ -108,8 +113,16 @@ const restaurantModal = (
   );
 };
 
+const createDayHtml = () => {
+  return chooseDayModal();
+};
+
 const createMenuHtml = (courses) => {
   return menuHtml(courses);
+};
+
+const createMenuWeek = (courses) => {
+  return menuWeekHtml(courses);
 };
 
 // hae kaikki ravintolat
@@ -122,11 +135,15 @@ const getRestaurants = async () => {
   }
 };
 
-//hae tietyn ravintolan pÃ¤ivÃ¤n menu
-
-const getDailyMenu = async (id, lang) => {
+const getDailyMenu = async (id, lang, day) => {
   try {
-    return await fetchData(`${apiUrl}/restaurants/daily/${id}/${lang}`);
+    const menu = await fetchData(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
+    if (menu && menu.days && menu.days[day]) {
+      return menu.days[day];
+    } else {
+      createErrorHtml();
+      return null;
+    }
   } catch (error) {
     console.error(error.message);
   }
@@ -134,12 +151,17 @@ const getDailyMenu = async (id, lang) => {
 
 const getWeeklyMenu = async (id, lang) => {
   try {
-    return await fetchData(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
+    const menu = await fetchData(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
+    if (menu && menu.days.length > 0) {
+      return menu.days;
+    } else {
+      createErrorHtml();
+      return null;
+    }
   } catch (error) {
     console.error(error.message);
   }
 };
-// restaurants aakkosjÃ¤rjestykseen
 
 /*  Destrukturointi
 const sortByName = ({name}, {name: bName}) =>
@@ -188,7 +210,7 @@ function updateMapMarkers() {
 }
 
 document.querySelector('#submit').addEventListener('click', (event) => {
-  event.preventDefault(); // Prevent default form submission behavior
+  event.preventDefault();
 
   const selectedValue = document.querySelector('#provider').value.toLowerCase();
   const selectedCityValue = document.querySelector('#city').value.toLowerCase();
@@ -202,14 +224,14 @@ document.querySelector('#submit').addEventListener('click', (event) => {
     );
   });
 
-  createTable(filteredRestaurants); // Update the table with filtered results
+  createTable(filteredRestaurants);
 });
 
-let selectedRestaurant = null; // Store the selected restaurant globally
+let selectedRestaurant = null;
 
 const createTable = (filteredRestaurants = restaurants) => {
-  taulukko.innerHTML = ''; // Clear the table
-  clearMarkers(); // Clear map markers
+  taulukko.innerHTML = '';
+  clearMarkers();
 
   if (filteredRestaurants.length === 0) {
     const noDataMessage = document.createElement('p');
@@ -235,22 +257,52 @@ const createTable = (filteredRestaurants = restaurants) => {
           ],
           15
         );
-
-        const marker = L.marker([
-          restaurant.location.coordinates[1],
-          restaurant.location.coordinates[0],
-        ])
-          .addTo(map)
-          .bindPopup(restaurant.name);
-        marker.openPopup();
-
         selectedRestaurant = restaurant;
-        const coursesResponse = await getDailyMenu(restaurant._id, 'fi');
-        const menuHtml = createMenuHtml(coursesResponse.courses);
         modal.innerHTML = '';
-        restaurantModal(restaurant, modal);
-        modal.insertAdjacentHTML('beforeend', menuHtml);
+        const dayHtml = createDayHtml();
+
+        // const coursesResponse = await getDailyMenu(restaurant._id, 'fi');
+        // const menuHtml = createMenuHtml(coursesResponse.courses);
+        // modal.innerHTML = '';
+        // restaurantModal(restaurant, modal);
+        modal.insertAdjacentHTML('beforeend', dayHtml);
         modal.showModal();
+        const dayButtons = document.querySelectorAll('.day');
+        dayButtons.forEach((button) => {
+          button.addEventListener('click', async (event) => {
+            modal.innerHTML = '';
+            event.preventDefault();
+
+            const selectedDay = event.target.value;
+            console.log(selectedDay);
+            modal.innerHTML = '';
+            if (selectedDay != 7) {
+              const coursesResponse = await getDailyMenu(
+                restaurant._id,
+                'fi',
+                selectedDay
+              );
+              try {
+                const menuHtml = createMenuHtml(
+                  coursesResponse.courses[selectedDay],
+                  day
+                );
+                restaurantModal(restaurant, modal);
+                modal.insertAdjacentHTML('beforeend', menuHtml);
+              } catch (error) {
+                const errors = createErrorHtml();
+                restaurantModal(restaurant, modal);
+                modal.insertAdjacentHTML('beforeend', errors);
+              }
+            } else {
+              const coursesForWeek = await getWeeklyMenu(restaurant._id, 'fi');
+              console.log('courses For Week: ', coursesForWeek);
+              const menuHtml = createMenuWeek(coursesForWeek);
+              restaurantModal(restaurant, modal);
+              modal.insertAdjacentHTML('beforeend', menuHtml);
+            }
+          });
+        });
         console.log(`Selected restaurant: ${restaurant.name}`);
       } catch (error) {
         console.error(error.message);
@@ -267,7 +319,7 @@ const createTable = (filteredRestaurants = restaurants) => {
       .addTo(map)
       .bindPopup(restaurant.name);
 
-    marker.on('click', () => addInfoHtml(restaurant));
+    marker.on('click', () => marker.openPopup());
     markers.push(marker);
   });
 };
