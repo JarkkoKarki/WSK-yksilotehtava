@@ -324,3 +324,100 @@ footer {
 dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+/* Profile Section */
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  background-color: #292929;
+  color: #ffffff;
+  padding: 3rem;
+  border-radius: 1em;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  margin: 2rem auto;
+  text-align: center;
+  height: 60%;
+  width: 40%;
+}
+
+.profile-section h2 {
+  font-size: 1.8rem;
+  color: #ff6f61;
+  margin-bottom: 1.5rem;
+  display: flex;
+  text-align: center;
+  padding: 4rem;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-form .form-group {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-form label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+  display: flex;
+  left: 0;
+}
+
+.profile-form input,
+.profile-form select {
+  width: 60%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+
+.profile-form input[type='file'] {
+  padding: 0.5rem;
+}
+
+.profile-form button {
+  background-color: #ff6f61;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.profile-form button:hover {
+  background-color: #e05550;
+}
+
+footer {
+  background-color: #1f1f1f;
+  color: #ffffff;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #ffffff;
+}

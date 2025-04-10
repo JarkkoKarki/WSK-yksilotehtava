@@ -4,31 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profiili</title>
-    <link rel="stylesheet" href="./css/style2.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script src="./js/profile.js" defer></script>
   </head>
   <body>
-    <header>
-      <h1>Profiili</h1>
-      <button class="logout">Kirjaudu ulos</button>
+    <header class="header">
+      <div class="container">
+        <h1>Profiili</h1>
+        <button class="logout">Kirjaudu ulos</button>
+        <button class="button" id="button">
+          <a href="./index.html">Etusivu</a>
+        </button>
+      </div>
     </header>
-    <main>
-      <section>
+    <main class="main">
+      <section class="profile-section">
         <h2>Tervetuloa, <span id="username"></span>!</h2>
-        <form id="update-profile-form">
-          <label for="profile-picture">Lisää profiilikuva:</label>
-          <input type="file" id="profile-picture" name="profile-picture" />
+        <form id="update-profile-form" class="profile-form">
+          <div class="form-group">
+            <label for="profile-picture">Lisää profiilikuva:</label>
+            <input type="file" id="profile-picture" name="profile-picture" />
+          </div>
 
-          <label for="favorite-restaurant">Valitse suosikkiravintola:</label>
-          <select id="favorite-restaurant">
-            <option value="Ravintola 1">Ravintola 1</option>
-            <option value="Ravintola 2">Ravintola 2</option>
-            <option value="Ravintola 3">Ravintola 3</option>
-          </select>
+          <div class="form-group">
+            <label for="favorite-restaurant">Valitse suosikkiravintola:</label>
+            <select id="favorite-restaurant">
+              <option value="Ravintola 1">Ravintola 1</option>
+              <option value="Ravintola 2">Ravintola 2</option>
+              <option value="Ravintola 3">Ravintola 3</option>
+            </select>
+          </div>
 
-          <button type="submit">Päivitä tiedot</button>
+          <button type="submit" class="btn">Päivitä tiedot</button>
         </form>
+        <p id="favorite-display"></p>
       </section>
     </main>
+    <footer>
+      <p>2025 WSK-yksilötehtävä</p>
+    </footer>
   </body>
 </html>

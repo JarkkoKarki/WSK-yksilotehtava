@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
+  const favoriteRestaurantSelect = document.getElementById(
+    'favorite-restaurant'
+  );
+  const favoriteDisplay = document.getElementById('favorite-display');
 
   if (!token) {
     alert('Sinun täytyy kirjautua sisään!');
@@ -9,63 +13,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('username').textContent = username;
-  const logout = document.querySelector('.logout');
+
+  const savedFavorite = localStorage.getItem('favoriteRestaurant');
+  if (savedFavorite) {
+    favoriteRestaurantSelect.value = savedFavorite;
+    favoriteDisplay.textContent = `Suosikkiravintolasi on: ${savedFavorite}`;
+  }
+
   document
     .getElementById('update-profile-form')
-    .addEventListener('submit', async (event) => {
+    .addEventListener('submit', (event) => {
       event.preventDefault();
 
-      try {
-        const response = await fetch(
-          'http://10.120.32.80/app/api/v1/user/update',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          }
-        );
+      const selectedRestaurant = favoriteRestaurantSelect.value;
+      localStorage.setItem('favoriteRestaurant', selectedRestaurant);
 
-        if (response.ok) {
-          alert('Profiili päivitetty onnistuneesti!');
-        } else {
-          const error = await response.json();
-          alert(`Virhe: ${error.message}`);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Palvelimeen ei saatu yhteyttä.');
-      }
+      favoriteDisplay.textContent = `Suosikkiravintolasi on: ${selectedRestaurant}`;
+
+      alert('Profiili päivitetty onnistuneesti!');
     });
-  logout.addEventListener('click', async () => {
-    try {
-      const response = await fetch(
-        'http://10.120.32.80/app/api/v1/auth/logout',
-        {
-          method: 'get',
-        }
-      );
 
-      if (response.ok) {
-        alert('Kirjauduttu ulos onnistuneesti!');
-      } else {
-        const error = await response.json();
-        alert(`Virhe uloskirjautumisessa: ${error.message}`);
-      }
-    } catch (error) {
-      console.error('Error during logout:', error);
-      alert('Palvelimeen ei saatu yhteyttä.');
-    }
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    window.location.href = 'index.html';
-  });
+  const logoutButton = document.querySelector('.logout');
+  logoutButton.addEventListener('click', logout);
 });
 
-// Logout
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
+  alert('Kirjauduttu ulos onnistuneesti!');
   window.location.href = 'login.html';
 }

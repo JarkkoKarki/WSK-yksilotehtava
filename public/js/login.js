@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('login-form');
   const guestButton = document.getElementById('guest-button');
 
-  // Guest button
   if (guestButton) {
     guestButton.addEventListener('click', () => {
       window.location.href = 'index.html';
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('Guest button not found in the DOM.');
   }
 
-  // Login form
   if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -36,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const data = await response.json();
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', username);
+          localStorage.setItem('filename', data.filename);
           window.location.href = 'index.html';
         } else {
           const error = await response.json();
@@ -62,8 +61,39 @@ document.addEventListener('DOMContentLoaded', () => {
       logout.href = '#';
       logout.textContent = 'Kirjaudu ulos';
       logout.classList.add('link');
+      document.addEventListener('DOMContentLoaded', () => {
+        const profilePictureElement =
+          document.getElementById('profile-picture');
+        const token = localStorage.getItem('token');
+        const filename = localStorage.getItem('filename');
 
-      // Logout
+        if (token && filename) {
+          fetch(`http://10.120.32.80/app/uploads/${filename}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.blob();
+              } else {
+                throw new Error('Profile picture not found');
+              }
+            })
+            .then((blob) => {
+              const imageUrl = URL.createObjectURL(blob);
+              profilePictureElement.src = imageUrl;
+            })
+            .catch((error) => {
+              console.warn('Using default profile picture:', error.message);
+              profilePictureElement.src = './images/default-profile.png';
+            });
+        } else {
+          profilePictureElement.src = './images/default-profile.png';
+        }
+      });
+
       logout.addEventListener('click', async () => {
         try {
           const response = await fetch(
@@ -84,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
           alert('Palvelimeen ei saatu yhteyttä.');
         }
 
-        // Clear localStorage and redirect
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         window.location.href = 'index.html';
