@@ -81,3 +81,15 @@ export const createErrorHtml = () => {
     `;
   return html;
 };
+
+export const addressHtml = (address) => {
+  let html = '';
+  html += `
+  <div>
+    <h3>Osoitteesi: </h3>
+    <h4 id="address-h4">${address}</h4>
+  </div>
+
+  `;
+  return html;
+};

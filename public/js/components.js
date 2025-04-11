@@ -20,20 +20,20 @@ const options = {
   maximumAge: 0,
 };
 
-function success(pos) {
+async function success(pos) {
   const crd = pos.coords;
   console.log(crd);
 
   if (!map) {
-    map = L.map('map').setView([crd.latitude, crd.longitude], 12);
+    map = L.map('map').setView([crd.latitude, crd.longitude], 15);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution:
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
   }
-
-  updateMapMarkers();
+  await getRestaurants();
+  updateMapMarkers(crd);
 }
 
 function error(err) {
@@ -171,11 +171,6 @@ const sortByName = ({name}, {name: bName}) =>
 let markers = [];
 
 function clearMarkers() {
-  if (!map) {
-    console.warn('Map is not initialized. Cannot clear markers.');
-    return;
-  }
-
   console.log('Clearing markers:', markers.length);
   markers.forEach((marker) => {
     if (map.hasLayer(marker)) {
@@ -189,26 +184,100 @@ const sortRestaurants = () => {
   restaurants.sort(sortByName);
 };
 
-function updateMapMarkers() {
+function updateMapMarkers(crd) {
   if (!map) {
     console.error('Map is not initialized.');
     return;
   }
 
+  // Clear existing markers before adding new ones
   clearMarkers();
 
+  if (!restaurants || restaurants.length === 0) {
+    console.warn('No restaurants available to display.');
+    return;
+  }
+
+  const userLat = map.getCenter().lat;
+  const userLng = map.getCenter().lng;
+
+  let closestRestaurantId = null;
+  let minDistance = Infinity;
+
   for (const restaurant of restaurants) {
-    const marker = L.marker([
-      restaurant.location.coordinates[1],
-      restaurant.location.coordinates[0],
-    ])
+    const restaurantLat = restaurant.location.coordinates[1];
+    const restaurantLng = restaurant.location.coordinates[0];
+
+    const distance = Math.sqrt(
+      Math.pow(userLat - restaurantLat, 2) +
+        Math.pow(userLng - restaurantLng, 2)
+    );
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestRestaurantId = restaurant._id;
+    }
+  }
+
+  console.log('Closest Restaurant ID:', closestRestaurantId);
+
+  let iconOptions = {
+    iconUrl: '../../lib/leaflet/red-icon.svg',
+    iconSize: [25, 41],
+  };
+  var customIcon = L.icon(iconOptions);
+
+  var normalIcon = L.icon({
+    iconUrl: '../../lib/leaflet/normal-icon.svg',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  var userIcon = L.icon({
+    iconUrl: '../../lib/leaflet/user-icon.svg',
+
+    iconSize: [38, 95],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+  const userMarker = L.marker([crd.latitude, crd.longitude], {
+    icon: userIcon,
+  })
+    .bindPopup('Olet täällä!')
+    .addTo(map);
+
+  markers.push(userMarker);
+  console.log('User marker added:', userMarker);
+
+  for (const restaurant of restaurants) {
+    const lat = restaurant.location.coordinates[1];
+    const lng = restaurant.location.coordinates[0];
+
+    if (isNaN(lat) || isNaN(lng)) {
+      console.warn(`Invalid coordinates for restaurant: ${restaurant.name}`);
+      continue;
+    }
+
+    console.log(`Adding marker for ${restaurant.name} at [${lat}, ${lng}]`);
+
+    const marker = L.marker([lat, lng], {
+      icon: restaurant._id === closestRestaurantId ? customIcon : normalIcon,
+    })
       .addTo(map)
       .bindPopup(restaurant.name);
-    marker.on('click', () => menuHtml(restaurant));
+
     markers.push(marker);
   }
-}
 
+  console.log(
+    `Closest restaurant: ${
+      restaurants.find((r) => r._id === closestRestaurantId).name
+    }, Distance: ${minDistance}`
+  );
+}
 document.querySelector('#submit').addEventListener('click', (event) => {
   event.preventDefault();
 
@@ -231,7 +300,6 @@ let selectedRestaurant = null;
 
 const createTable = (filteredRestaurants = restaurants) => {
   taulukko.innerHTML = '';
-  clearMarkers();
 
   if (filteredRestaurants.length === 0) {
     const noDataMessage = document.createElement('p');
@@ -311,16 +379,6 @@ const createTable = (filteredRestaurants = restaurants) => {
 
     RestaurantRow(restaurant, tr);
     taulukko.append(tr);
-
-    const marker = L.marker([
-      restaurant.location.coordinates[1],
-      restaurant.location.coordinates[0],
-    ])
-      .addTo(map)
-      .bindPopup(restaurant.name);
-
-    marker.on('click', () => marker.openPopup());
-    markers.push(marker);
   });
 };
 

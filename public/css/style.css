@@ -421,3 +421,16 @@ footer {
   margin-right: 1rem;
   border: 2px solid #ffffff;
 }
+
+#address {
+  display: flex;
+  justify-content: center;
+  width: 16rem;
+  height: 20rem;
+  background-color: #736e6e;
+  bottom: 0;
+  align-content: center;
+  padding: 1rem;
+  border-color: #121212;
+  border-radius: 2rem;
+}
