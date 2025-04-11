@@ -1,4 +1,4 @@
-import {fetchData} from '../../lib/fetchData.js';
+import {fetchData} from '../../lib/fetchdata.js';
 import {apiUrl} from './variables.js';
 import {sortByName} from './utils.js';
 import {

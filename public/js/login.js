@@ -1,3 +1,5 @@
+import {fetchPictureWithId} from './fetchPicture.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
   const loginContainer = document.querySelector('.login');
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         const response = await fetch(
-          'http://10.120.32.80/app/api/v1/auth/login',
+          'http://10.120.32.93/app/api/v1/auth/login',
           {
             method: 'POST',
             headers: {
@@ -32,10 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', username);
-          localStorage.setItem('filename', data.filename);
-          window.location.href = 'index.html';
+          localStorage.setItem('id', data.user.user_id);
+          fetchPictureWithId(data.user.user_id);
         } else {
           const error = await response.json();
           alert(`Virhe kirjautumisessa: ${error.message}`);
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filename = localStorage.getItem('filename');
 
         if (token && filename) {
-          fetch(`http://10.120.32.80/app/uploads/${filename}`, {
+          fetch(`http://10.120.32.93/app/uploads/${filename}`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
@@ -97,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
       logout.addEventListener('click', async () => {
         try {
           const response = await fetch(
-            'http://10.120.32.80/app/api/v1/auth/logout',
+            'http://10.120.32.93/app/api/v1/auth/logout',
             {
               method: 'GET',
             }
@@ -105,6 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (response.ok) {
             alert('Kirjauduttu ulos onnistuneesti!');
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('filename');
+            window.location.href = 'index.html';
           } else {
             const error = await response.json();
             alert(`Virhe uloskirjautumisessa: ${error.message}`);
@@ -113,9 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Error during logout:', error);
           alert('Palvelimeen ei saatu yhteyttä.');
         }
-
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        localStorage.removeItem('filename');
+        localStorage.removeItem('id');
         window.location.href = 'index.html';
       });
 

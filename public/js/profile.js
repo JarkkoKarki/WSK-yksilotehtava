@@ -1,10 +1,8 @@
+import {fetchPicture} from '../js/fetchPicture.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
-  const favoriteRestaurantSelect = document.getElementById(
-    'favorite-restaurant'
-  );
-  const favoriteDisplay = document.getElementById('favorite-display');
+  const usernameDisplay = document.getElementById('username');
 
   if (!token) {
     alert('Sinun täytyy kirjautua sisään!');
@@ -12,34 +10,33 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  document.getElementById('username').textContent = username;
-
-  const savedFavorite = localStorage.getItem('favoriteRestaurant');
-  if (savedFavorite) {
-    favoriteRestaurantSelect.value = savedFavorite;
-    favoriteDisplay.textContent = `Suosikkiravintolasi on: ${savedFavorite}`;
-  }
-
+  const currentUsername = localStorage.getItem('username');
+  usernameDisplay.textContent = currentUsername;
   document
     .getElementById('update-profile-form')
-    .addEventListener('submit', (event) => {
+    .addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const selectedRestaurant = favoriteRestaurantSelect.value;
-      localStorage.setItem('favoriteRestaurant', selectedRestaurant);
+      const newUsername = document.getElementById('username').textContent;
+      const profilePicture =
+        document.getElementById('profile-picture').files[0];
 
-      favoriteDisplay.textContent = `Suosikkiravintolasi on: ${selectedRestaurant}`;
-
-      alert('Profiili päivitetty onnistuneesti!');
+      const formData = new FormData();
+      formData.append('username', newUsername);
+      if (profilePicture) {
+        formData.append('profilePicture', profilePicture);
+      }
+      localStorage.setItem('username', newUsername);
+      fetchPicture(formData);
     });
 
+  // Logout functionality
   const logoutButton = document.querySelector('.logout');
-  logoutButton.addEventListener('click', logout);
+  logoutButton.addEventListener('click', () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('favoriteRestaurant');
+    alert('Kirjauduttu ulos onnistuneesti!');
+    window.location.href = 'login.html';
+  });
 });
-
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('username');
-  alert('Kirjauduttu ulos onnistuneesti!');
-  window.location.href = 'login.html';
-}
