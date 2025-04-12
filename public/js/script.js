@@ -1,5 +1,5 @@
 import components from './components.js';
-import {fetchAddress} from './fetchAddress.js';
+import {fetchAddress, fetchBussStops} from './fetchApi.js';
 import {addressHtml} from './html.js';
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -3,20 +3,12 @@ export async function fetchPicture(formData) {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
     const payload = JSON.parse(atob(token.split('.')[1]));
-    console.log('Token Payload:', payload);
-    console.log('Token:', token);
-    console.log('User ID:', id);
 
     // Check for user ID mismatch
     if (id !== payload.user_id.toString()) {
       console.error('User ID mismatch:', {id, userIdInToken: payload.user_id});
-      alert('Sinulla ei ole oikeuksia tähän toimintoon.');
+      alert('Sinulla ei ole oikeuksia.');
       return;
-    }
-
-    // Log the formData being sent
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
     }
 
     const response = await fetch(`http://10.120.32.93/app/api/v1/users/${id}`, {
@@ -29,7 +21,6 @@ export async function fetchPicture(formData) {
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log('Response Data:', responseData);
       localStorage.removeItem('filename');
       localStorage.setItem('filename', responseData.updatedUser.thumbnailPath);
     } else {
@@ -46,8 +37,8 @@ export async function fetchPicture(formData) {
 export async function fetchPictureWithId(id) {
   try {
     const token = localStorage.getItem('token');
-    console.log(id);
-    console.log(token);
+    const payload = JSON.parse(atob(token.split('.')[1]));
+
     const response = await fetch(`http://10.120.32.93/app/api/v1/users/${id}`, {
       method: 'GET',
       headers: {
@@ -55,17 +46,17 @@ export async function fetchPictureWithId(id) {
       },
     });
 
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log(responseData);
-      const filePath = responseData.filename;
-      console.log(filePath);
-      localStorage.setItem('filename', filePath);
-    } else {
+    if (!response.ok) {
       const errorData = await response.json();
-      console.error('Profiilin päivitys epäonnistui:', errorData);
+      console.error('Error fetching profile picture:', errorData);
       alert(`Virhe: ${errorData.message}`);
+      return;
     }
+
+    const responseData = await response.json();
+
+    const filePath = responseData.filename;
+    localStorage.setItem('filename', filePath);
   } catch (error) {
     console.error('Virhe profiilin päivityksessä:', error);
     alert('Tapahtui virhe. Yritä myöhemmin uudelleen.');

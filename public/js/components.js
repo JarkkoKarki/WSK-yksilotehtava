@@ -7,7 +7,7 @@ import {
   menuWeekHtml,
   createErrorHtml,
 } from './html.js';
-
+import {fetchBussStops} from './fetchApi.js';
 const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
 let restaurants = [];
@@ -22,7 +22,6 @@ const options = {
 
 async function success(pos) {
   const crd = pos.coords;
-  console.log(crd);
 
   if (!map) {
     map = L.map('map').setView([crd.latitude, crd.longitude], 15);
@@ -129,7 +128,6 @@ const createMenuWeek = (courses) => {
 const getRestaurants = async () => {
   try {
     restaurants = await fetchData(apiUrl + '/restaurants');
-    console.log(restaurants);
   } catch (error) {
     console.error(error.message);
   }
@@ -171,20 +169,18 @@ const sortByName = ({name}, {name: bName}) =>
 let markers = [];
 
 function clearMarkers() {
-  console.log('Clearing markers:', markers.length);
   markers.forEach((marker) => {
     if (map.hasLayer(marker)) {
       map.removeLayer(marker);
     }
   });
   markers = [];
-  console.log('Markers cleared. Remaining:', markers.length);
 }
 const sortRestaurants = () => {
   restaurants.sort(sortByName);
 };
 
-function updateMapMarkers(crd) {
+async function updateMapMarkers(crd) {
   if (!map) {
     console.error('Map is not initialized.');
     return;
@@ -198,11 +194,13 @@ function updateMapMarkers(crd) {
     return;
   }
 
-  const userLat = map.getCenter().lat;
-  const userLng = map.getCenter().lng;
+  const userLat = crd.latitude;
+  const userLng = crd.longitude;
 
   let closestRestaurantId = null;
   let minDistance = Infinity;
+  let closestlng = null;
+  let closestlat = null;
 
   for (const restaurant of restaurants) {
     const restaurantLat = restaurant.location.coordinates[1];
@@ -216,10 +214,10 @@ function updateMapMarkers(crd) {
     if (distance < minDistance) {
       minDistance = distance;
       closestRestaurantId = restaurant._id;
+      closestlat = restaurant.location.coordinates[1];
+      closestlng = restaurant.location.coordinates[0];
     }
   }
-
-  console.log('Closest Restaurant ID:', closestRestaurantId);
 
   let iconOptions = {
     iconUrl: '../../lib/leaflet/red-icon.svg',
@@ -248,10 +246,9 @@ function updateMapMarkers(crd) {
   })
     .bindPopup('Olet täällä!')
     .addTo(map);
-
   markers.push(userMarker);
-  console.log('User marker added:', userMarker);
-
+  bussStops(userLng, userLat);
+  bussStops(closestlng, closestlat);
   for (const restaurant of restaurants) {
     const lat = restaurant.location.coordinates[1];
     const lng = restaurant.location.coordinates[0];
@@ -260,23 +257,13 @@ function updateMapMarkers(crd) {
       console.warn(`Invalid coordinates for restaurant: ${restaurant.name}`);
       continue;
     }
-
-    console.log(`Adding marker for ${restaurant.name} at [${lat}, ${lng}]`);
-
     const marker = L.marker([lat, lng], {
       icon: restaurant._id === closestRestaurantId ? customIcon : normalIcon,
     })
       .addTo(map)
       .bindPopup(restaurant.name);
-
     markers.push(marker);
   }
-
-  console.log(
-    `Closest restaurant: ${
-      restaurants.find((r) => r._id === closestRestaurantId).name
-    }, Distance: ${minDistance}`
-  );
 }
 document.querySelector('#submit').addEventListener('click', (event) => {
   event.preventDefault();
@@ -342,7 +329,6 @@ const createTable = (filteredRestaurants = restaurants) => {
             event.preventDefault();
 
             const selectedDay = event.target.value;
-            console.log(selectedDay);
             modal.innerHTML = '';
             if (selectedDay != 7) {
               const coursesResponse = await getDailyMenu(
@@ -364,14 +350,12 @@ const createTable = (filteredRestaurants = restaurants) => {
               }
             } else {
               const coursesForWeek = await getWeeklyMenu(restaurant._id, 'fi');
-              console.log('courses For Week: ', coursesForWeek);
               const menuHtml = createMenuWeek(coursesForWeek);
               restaurantModal(restaurant, modal);
               modal.insertAdjacentHTML('beforeend', menuHtml);
             }
           });
         });
-        console.log(`Selected restaurant: ${restaurant.name}`);
       } catch (error) {
         console.error(error.message);
       }
@@ -391,3 +375,31 @@ export default {
   error,
   restaurants,
 };
+
+async function bussStops(lng, lat) {
+  var bussIcon = L.icon({
+    iconUrl: '../../lib/leaflet/buss-icon.svg',
+    iconSize: [10, 15],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  try {
+    const bussStops = await fetchBussStops(lng, lat);
+    for (const bussStop of bussStops) {
+      const stopName = bussStop.description;
+      const stopLat = bussStop.latitude;
+      const stopLng = bussStop.longitude;
+
+      const bussMarker = L.marker([stopLat, stopLng], {
+        icon: bussIcon,
+      })
+        .bindPopup(`${stopName}`)
+        .addTo(map);
+      markers.push(bussMarker);
+    }
+  } catch (error) {
+    console.error('Error fetching bus stops:', error);
+  }
+}

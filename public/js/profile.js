@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('profilePicture', profilePicture);
       }
       localStorage.setItem('username', newUsername);
-      fetchPicture(formData);
+      await fetchPicture(formData);
+      window.location.href = 'index.html';
     });
 
   // Logout functionality

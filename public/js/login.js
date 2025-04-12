@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', username);
           localStorage.setItem('id', data.user.user_id);
-          fetchPictureWithId(data.user.user_id);
+          await fetchPictureWithId(data.user.user_id);
+          window.location.href = 'index.html';
         } else {
           const error = await response.json();
           alert(`Virhe kirjautumisessa: ${error.message}`);

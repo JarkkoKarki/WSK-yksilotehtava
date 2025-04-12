@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
           const responseData = await response.json();
           const thumbnail = responseData.result.thumbnailPath;
-          console.log(thumbnail);
           localStorage.setItem('filename', thumbnail);
           window.location.href = 'login.html';
         }
