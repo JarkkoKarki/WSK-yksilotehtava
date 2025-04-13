@@ -1,6 +1,3 @@
-﻿# js-template
-
-https://users.metropolia.fi/~jarkkaka/WSK-25/
 
 <img src="/lib/pictures/main.png">
 
