@@ -33,4 +33,14 @@ This project is a web application designed to help users locate student restaura
 5. **Geolocation**:
    - Automatically fetches the user's location to display nearby restaurants and bus stops.
 
-## Project Structure
+## Backend Server
+
+This project relies on a backend server to:
+
+- Handle user authentication (registration, login, and logout).
+- Fetch nearby bus stops based on the user's location.
+- Manage user profile pictures (upload and retrieval).
+
+- [Server Repository](https://github.com/JarkkoKarki/WSK-yksilotehtava-server)
+
+Restaurants are fetched from a different API.
