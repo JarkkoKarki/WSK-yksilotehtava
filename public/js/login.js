@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         const response = await fetch(
-          'http://10.120.32.93/app/api/v1/auth/login',
+          'https://10.120.32.93/app/api/v1/auth/login',
           {
             method: 'POST',
             headers: {

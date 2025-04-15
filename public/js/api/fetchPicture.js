@@ -10,13 +10,16 @@ export async function fetchPicture(formData) {
       return;
     }
 
-    const response = await fetch(`http://10.120.32.93/app/api/v1/users/${id}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `https://10.120.32.93/app/api/v1/users/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
 
     if (response.ok) {
       const responseData = await response.json();
@@ -39,12 +42,15 @@ export async function fetchPictureWithId(id) {
     const payload = JSON.parse(atob(token.split('.')[1]));
     console.log(payload);
 
-    const response = await fetch(`http://10.120.32.93/app/api/v1/users/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `https://10.120.32.93/app/api/v1/users/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -69,7 +75,7 @@ export const loadProfilePicture = () => {
   const filename = localStorage.getItem('filename');
 
   if (token && filename && profilePictureElement) {
-    fetch(`http://10.120.32.93/app/${filename}`, {
+    fetch(`https://10.120.32.93/app/${filename}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -29,14 +29,14 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
       }
 
       if (isFavorite) {
-        await fetch(`http://10.120.32.93/app/api/v1/favorites/`, {
+        await fetch(`https://10.120.32.93/app/api/v1/favorites/`, {
           method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({user_id: userId, restaurant_id: _id}),
         });
         favoriteButton.innerText = 'Add to Favorites';
       } else {
-        await fetch(`http://10.120.32.93/app/api/v1/favorites/`, {
+        await fetch(`https://10.120.32.93/app/api/v1/favorites/`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({user_id: userId, restaurant_id: _id}),
@@ -45,7 +45,7 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
       }
 
       const res = await fetch(
-        `http://10.120.32.93/app/api/v1/favorites/${userId}`
+        `https://10.120.32.93/app/api/v1/favorites/${userId}`
       );
       favorites = await res.json();
     } catch (error) {

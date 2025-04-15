@@ -35,10 +35,13 @@ const RegisterUser = async () => {
         }
 
         try {
-          const response = await fetch('http://10.120.32.93/app/api/v1/users', {
-            method: 'POST',
-            body: formData,
-          });
+          const response = await fetch(
+            'https://10.120.32.93/app/api/v1/users',
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
 
           if (response.ok) {
             const responseData = await response.json();

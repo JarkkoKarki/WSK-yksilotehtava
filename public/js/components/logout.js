@@ -1,8 +1,11 @@
 export const logoutUser = async () => {
   try {
-    const response = await fetch('http://10.120.32.93/app/api/v1/auth/logout', {
-      method: 'GET',
-    });
+    const response = await fetch(
+      'https://10.120.32.93/app/api/v1/auth/logout',
+      {
+        method: 'GET',
+      }
+    );
 
     if (response.ok) {
       alert('Kirjauduttu ulos onnistuneesti!');

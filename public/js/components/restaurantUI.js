@@ -32,7 +32,7 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
   let favorites = [];
   try {
     const res = await fetch(
-      `http://10.120.32.93/app/api/v1/favorites/${localStorage.getItem('id')}`
+      `https://10.120.32.93/app/api/v1/favorites/${localStorage.getItem('id')}`
     );
     favorites = await res.json();
   } catch (e) {
