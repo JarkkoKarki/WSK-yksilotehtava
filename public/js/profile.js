@@ -1,4 +1,5 @@
-import {fetchPicture} from '../js/fetchPicture.js';
+import {fetchPicture} from '../js/api/fetchPicture.js';
+import {logoutUser} from './components/logout.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
@@ -11,13 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const currentUsername = localStorage.getItem('username');
-  usernameDisplay.textContent = currentUsername;
+  usernameDisplay.value = currentUsername;
   document
     .getElementById('update-profile-form')
     .addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const newUsername = document.getElementById('username').textContent;
+      const newUsername = document.getElementById('username').value;
       const profilePicture =
         document.getElementById('profile-picture').files[0];
 
@@ -31,13 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = 'index.html';
     });
 
-  // Logout functionality
   const logoutButton = document.querySelector('.logout');
   logoutButton.addEventListener('click', () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('favoriteRestaurant');
-    alert('Kirjauduttu ulos onnistuneesti!');
+    logoutUser();
     window.location.href = 'login.html';
   });
 });

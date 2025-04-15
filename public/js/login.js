@@ -1,4 +1,6 @@
-import {fetchPictureWithId} from './fetchPicture.js';
+import {loadProfilePicture} from './api/fetchPicture.js';
+import {logoutUser} from './components/logout.js';
+import {fetchPictureWithId} from './api/fetchPicture.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
@@ -34,11 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           const data = await response.json();
+          console.log('data: ', data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', username);
           localStorage.setItem('id', data.user.user_id);
           await fetchPictureWithId(data.user.user_id);
-          window.location.href = 'index.html';
         } else {
           const error = await response.json();
           alert(`Virhe kirjautumisessa: ${error.message}`);
@@ -50,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Logged-in
   if (loginContainer) {
     if (token) {
       loginContainer.innerHTML = '';
@@ -64,66 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
       logout.href = '#';
       logout.textContent = 'Kirjaudu ulos';
       logout.classList.add('link');
-      document.addEventListener('DOMContentLoaded', () => {
-        const profilePictureElement =
-          document.getElementById('profile-picture');
-        const token = localStorage.getItem('token');
-        const filename = localStorage.getItem('filename');
-
-        if (token && filename) {
-          fetch(`http://10.120.32.93/app/uploads/${filename}`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-            .then((response) => {
-              if (response.ok) {
-                return response.blob();
-              } else {
-                throw new Error('Profile picture not found');
-              }
-            })
-            .then((blob) => {
-              const imageUrl = URL.createObjectURL(blob);
-              profilePictureElement.src = imageUrl;
-            })
-            .catch((error) => {
-              console.warn('Using default profile picture:', error.message);
-              profilePictureElement.src = './images/default-profile.png';
-            });
-        } else {
-          profilePictureElement.src = './images/default-profile.png';
-        }
-      });
+      loadProfilePicture();
 
       logout.addEventListener('click', async () => {
-        try {
-          const response = await fetch(
-            'http://10.120.32.93/app/api/v1/auth/logout',
-            {
-              method: 'GET',
-            }
-          );
-
-          if (response.ok) {
-            alert('Kirjauduttu ulos onnistuneesti!');
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            localStorage.removeItem('filename');
-            window.location.href = 'index.html';
-          } else {
-            const error = await response.json();
-            alert(`Virhe uloskirjautumisessa: ${error.message}`);
-          }
-        } catch (error) {
-          console.error('Error during logout:', error);
-          alert('Palvelimeen ei saatu yhteyttä.');
-        }
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('filename');
-        localStorage.removeItem('id');
+        logoutUser();
         window.location.href = 'index.html';
       });
 

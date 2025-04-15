@@ -1,24 +1,27 @@
-export function menuHtml(courses, day) {
+export function menuHtml(courses) {
   try {
-    if (courses.name) {
-      let html = '';
-      console.log('html ', courses);
-      const {name, price, diets} = courses;
-      html += `
-    <article class="course">
-        <p><strong>${name}</strong>,
-        Hinta: ${price},
-        Allergeenit: ${diets}</p>
-    </article>
-    `;
-      return html;
+    console.log('Courses received in menuHtml:', courses);
+    let html = '';
+    for (const course of courses) {
+      if (course.name) {
+        console.log('html ', course);
+        const {name, price, diets} = course;
+        console.log('ruuat: ', {name, price, diets});
+        html += `
+          <article class="course">
+              <p><strong>${name}</strong>,
+              Hinta: ${price || 'Ei hintatietoa'},
+              Allergeenit: ${diets || 'Ei tietoa'}</p>
+          </article>
+        `;
+      }
     }
+    return html;
   } catch (error) {
-    console.log('Menu not available');
-    createErrorHtml();
+    console.error('Error in menuHtml:', error.message);
+    return '<p>Ei ruokalistaa saatavilla.</p>';
   }
 }
-
 export function chooseDayModal() {
   let html = '';
   html += `
@@ -53,7 +56,7 @@ export const menuWeekHtml = (courses) => {
   for (const course of courses) {
     if (!course || !course.courses) {
       console.warn(`Invalid course data at index ${num}:`, course);
-      continue; // Skip invalid entries
+      continue;
     }
 
     for (const {name, price, diets} of course.courses) {
@@ -74,11 +77,12 @@ export const menuWeekHtml = (courses) => {
 export const createErrorHtml = () => {
   let html = '';
   html += `
-  <div style="display: flex; justify-content: center; align-content: center;  class="modal">
-    <div style="display: flex; justify-content: center; align-content: center; flex-direction: column; width:40%;" class="modal-content">
-      <p>Ei ruokalistaa saatavilla.</p>
+    <div style="display: flex; justify-content: center; align-content: center;" class="modal">
+      <div style="display: flex; justify-content: center; align-content: center; flex-direction: column; width:40%;" class="modal-content">
+        <p>Ei ruokalistaa saatavilla.</p>
+      </div>
     </div>
-    `;
+  `;
   return html;
 };
 

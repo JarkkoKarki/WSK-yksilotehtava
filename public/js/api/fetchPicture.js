@@ -4,7 +4,6 @@ export async function fetchPicture(formData) {
     const id = localStorage.getItem('id');
     const payload = JSON.parse(atob(token.split('.')[1]));
 
-    // Check for user ID mismatch
     if (id !== payload.user_id.toString()) {
       console.error('User ID mismatch:', {id, userIdInToken: payload.user_id});
       alert('Sinulla ei ole oikeuksia.');
@@ -38,6 +37,7 @@ export async function fetchPictureWithId(id) {
   try {
     const token = localStorage.getItem('token');
     const payload = JSON.parse(atob(token.split('.')[1]));
+    console.log(payload);
 
     const response = await fetch(`http://10.120.32.93/app/api/v1/users/${id}`, {
       method: 'GET',
@@ -54,7 +54,7 @@ export async function fetchPictureWithId(id) {
     }
 
     const responseData = await response.json();
-
+    console.log(responseData);
     const filePath = responseData.filename;
     localStorage.setItem('filename', filePath);
   } catch (error) {
@@ -62,3 +62,27 @@ export async function fetchPictureWithId(id) {
     alert('Tapahtui virhe. Yritä myöhemmin uudelleen.');
   }
 }
+
+export const loadProfilePicture = () => {
+  const profilePictureElement = document.getElementById('profile-picture');
+  const token = localStorage.getItem('token');
+  const filename = localStorage.getItem('filename');
+
+  if (token && filename && profilePictureElement) {
+    fetch(`http://10.120.32.93/app/${filename}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.blob() : Promise.reject('not found')))
+      .then((blob) => {
+        profilePictureElement.src = URL.createObjectURL(blob);
+      })
+      .catch(() => {
+        profilePictureElement.src = './images/default-profile.png';
+      });
+  } else if (profilePictureElement) {
+    profilePictureElement.src = './images/default-profile.png';
+  }
+};

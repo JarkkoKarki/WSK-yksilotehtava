@@ -7,7 +7,8 @@ import {
   menuWeekHtml,
   createErrorHtml,
 } from './html.js';
-import {fetchBussStops} from './fetchApi.js';
+import {fetchBussStops} from './api/fetchApi.js';
+import {createTable} from './components/restaurantUI.js';
 
 const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
@@ -58,64 +59,6 @@ function error(err) {
   updateMapMarkers();
 }
 
-const RestaurantRow = ({name, address, city}, tr) => {
-  const nameTd = document.createElement('td');
-  nameTd.innerText = name;
-
-  const addressTd = document.createElement('td');
-  addressTd.innerText = address;
-
-  const cityTd = document.createElement('td');
-  cityTd.innerText = city;
-
-  tr.append(nameTd, addressTd, cityTd);
-};
-
-const restaurantModal = (
-  {name, address, city, postalCode, phone, company},
-  modal
-) => {
-  const restaurantName = document.createElement('h1');
-  restaurantName.innerText = name;
-
-  const addressP = document.createElement('p');
-  addressP.innerText = address;
-
-  const cityP = document.createElement('p');
-  cityP.innerText = city;
-
-  const postalP = document.createElement('p');
-  postalP.innerText = postalCode;
-
-  const phoneP = document.createElement('p');
-  phoneP.innerText = phone;
-
-  const companyNameP = document.createElement('p');
-  companyNameP.innerText = `Ravintola: ${company}`;
-
-  const closeButton = document.createElement('button');
-  closeButton.innerText = 'Close';
-  closeButton.style.marginTop = '1rem';
-  closeButton.style.cursor = 'pointer';
-  closeButton.style.position = 'absolute';
-  closeButton.style.top = '0';
-  closeButton.style.right = '0';
-  closeButton.style.margin = '1rem';
-  closeButton.addEventListener('click', () => {
-    modal.close();
-  });
-
-  modal.append(
-    closeButton,
-    restaurantName,
-    addressP,
-    cityP,
-    postalP,
-    phoneP,
-    companyNameP
-  );
-};
-
 const createDayHtml = () => {
   return chooseDayModal();
 };
@@ -127,41 +70,13 @@ const createMenuHtml = (courses) => {
 const createMenuWeek = (courses) => {
   return menuWeekHtml(courses);
 };
-
 const getRestaurants = async () => {
   try {
     allRestaurants = await fetchData(apiUrl + '/restaurants');
     restaurants = [...allRestaurants];
+    createTable(restaurants, modal, taulukko);
   } catch (error) {
-    console.error(error.message);
-  }
-};
-
-const getDailyMenu = async (id, lang, day) => {
-  try {
-    const menu = await fetchData(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
-    if (menu && menu.days && menu.days[day]) {
-      return menu.days[day];
-    } else {
-      createErrorHtml();
-      return null;
-    }
-  } catch (error) {
-    console.error(error.message);
-  }
-};
-
-const getWeeklyMenu = async (id, lang) => {
-  try {
-    const menu = await fetchData(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
-    if (menu && menu.days.length > 0) {
-      return menu.days;
-    } else {
-      createErrorHtml();
-      return null;
-    }
-  } catch (error) {
-    console.error(error.message);
+    console.error('Error fetching restaurants:', error.message);
   }
 };
 
@@ -285,106 +200,14 @@ document.querySelector('#submit').addEventListener('click', (event) => {
   }
 
   updateMapMarkers(crd);
-  createTable(restaurants);
+  createTable(restaurants, modal, taulukko);
 });
 
 let selectedRestaurant = null;
 
-const createTable = (filteredRestaurants = restaurants) => {
-  taulukko.innerHTML = '';
-
-  clearMarkers();
-
-  if (filteredRestaurants.length === 0) {
-    const noDataMessage = document.createElement('p');
-    noDataMessage.innerText =
-      'No restaurants found. Please adjust your filters.';
-    taulukko.append(noDataMessage);
-    return;
-  }
-
-  filteredRestaurants.forEach((restaurant) => {
-    const tr = document.createElement('tr');
-
-    tr.addEventListener('click', async () => {
-      try {
-        for (const elem of document.querySelectorAll('.highlight')) {
-          elem.classList.remove('highlight');
-        }
-        tr.classList.add('highlight');
-        map.setView(
-          [
-            restaurant.location.coordinates[1],
-            restaurant.location.coordinates[0],
-          ],
-          15
-        );
-        selectedRestaurant = restaurant;
-        modal.innerHTML = '';
-        const dayHtml = createDayHtml();
-
-        modal.insertAdjacentHTML('beforeend', dayHtml);
-        modal.showModal();
-        const dayButtons = document.querySelectorAll('.day');
-        dayButtons.forEach((button) => {
-          button.addEventListener('click', async (event) => {
-            modal.innerHTML = '';
-            event.preventDefault();
-
-            const selectedDay = event.target.value;
-            modal.innerHTML = '';
-            if (selectedDay != 7) {
-              const coursesResponse = await getDailyMenu(
-                restaurant._id,
-                'fi',
-                selectedDay
-              );
-              try {
-                const menuHtml = createMenuHtml(
-                  coursesResponse.courses[selectedDay],
-                  day
-                );
-                restaurantModal(restaurant, modal);
-                modal.insertAdjacentHTML('beforeend', menuHtml);
-              } catch (error) {
-                const errors = createErrorHtml();
-                restaurantModal(restaurant, modal);
-                modal.insertAdjacentHTML('beforeend', errors);
-              }
-            } else {
-              const coursesForWeek = await getWeeklyMenu(restaurant._id, 'fi');
-              const menuHtml = createMenuWeek(coursesForWeek);
-              restaurantModal(restaurant, modal);
-              modal.insertAdjacentHTML('beforeend', menuHtml);
-            }
-          });
-        });
-      } catch (error) {
-        console.error(error.message);
-      }
-    });
-
-    RestaurantRow(restaurant, tr);
-    taulukko.append(tr);
-
-    const lat = restaurant.location.coordinates[1];
-    const lng = restaurant.location.coordinates[0];
-
-    if (!isNaN(lat) && !isNaN(lng)) {
-      const marker = L.marker([lat, lng], {
-        icon: normalIcon,
-      })
-        .addTo(map)
-        .bindPopup(restaurant.name);
-      markers.push(marker);
-    }
-  });
-};
-
 export default {
   getRestaurants,
   sortRestaurants,
-  createTable,
   success,
   options,
   error,

@@ -1,6 +1,8 @@
-import components from './components.js';
-import {fetchAddress, fetchBussStops} from './fetchApi.js';
+import {fetchAddress} from './api/fetchApi.js';
 import {addressHtml} from './html.js';
+import components from './components.js';
+import {RestaurantRow} from './components/restaurantRow.js';
+import {createTable} from './components/restaurantUI.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const main = async () => {
@@ -17,19 +19,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const position = await getPosition();
       const {longitude, latitude} = position.coords;
 
-      // Fetch the address using the user's location
       const address = await fetchAddress(longitude, latitude);
       const addrhtml = addressHtml(address.address);
-      document.querySelector('#address').innerHTML = addrhtml;
+
+      const addressElement = document.querySelector('#address');
+      if (addressElement) {
+        addressElement.innerHTML = addrhtml;
+      } else {
+        console.error('Address element not found in the DOM.');
+      }
 
       components.success(position);
-
-      await components.getRestaurants();
-      components.sortRestaurants();
-      components.createTable();
     } catch (error) {
       console.error('An error occurred:', error.message);
-      alert('Refresh page');
+      components.error();
+      alert('Location failed. Using default location.');
     }
   };
 
