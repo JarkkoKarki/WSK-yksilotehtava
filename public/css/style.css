@@ -416,12 +416,21 @@ dialog::backdrop {
 
 #address {
   display: flex;
-  justify-content: center;
-  width: 16rem;
-  height: 20rem;
+  flex-direction: column; /* Stack content vertically */
+  justify-content: flex-start; /* Align content at the top */
+  align-items: flex-start; /* Align content to the left */
+  width: 100%; /* Allow the container to take full width */
+  max-width: 600px; /* Set a maximum width for better readability */
+  height: auto; /* Allow height to adjust based on content */
+  max-height: 400px; /* Set a maximum height */
+  overflow-y: auto; /* Add vertical scrolling if content overflows */
   background-color: #736e6e;
   padding: 1rem;
-  border-radius: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .buttons-container {

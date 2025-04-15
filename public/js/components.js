@@ -14,7 +14,7 @@ const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
 let restaurants = [];
 let allRestaurants = [];
-var map;
+export var map;
 
 let iconOptions = {
   iconUrl: '../../lib/leaflet/red-icon.svg',
@@ -59,22 +59,11 @@ function error(err) {
   updateMapMarkers();
 }
 
-const createDayHtml = () => {
-  return chooseDayModal();
-};
-
-const createMenuHtml = (courses) => {
-  return menuHtml(courses);
-};
-
-const createMenuWeek = (courses) => {
-  return menuWeekHtml(courses);
-};
 const getRestaurants = async () => {
   try {
     allRestaurants = await fetchData(apiUrl + '/restaurants');
     restaurants = [...allRestaurants];
-    createTable(restaurants, modal, taulukko);
+    createTable(restaurants, modal, taulukko, crd);
   } catch (error) {
     console.error('Error fetching restaurants:', error.message);
   }
@@ -200,7 +189,7 @@ document.querySelector('#submit').addEventListener('click', (event) => {
   }
 
   updateMapMarkers(crd);
-  createTable(restaurants, modal, taulukko);
+  createTable(restaurants, modal, taulukko, crd);
 });
 
 let selectedRestaurant = null;
