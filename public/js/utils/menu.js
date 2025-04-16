@@ -1,9 +1,11 @@
-import {apiUrl} from '../variables.js';
+import {apiUrlRestaurant} from '../variables.js';
 import {createErrorHtml} from '../html.js';
 
 export const getDailyMenu = async (id, lang, day) => {
   try {
-    const response = await fetch(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
+    const response = await fetch(
+      `${apiUrlRestaurant}/restaurants/weekly/${id}/${lang}`
+    );
     console.log(response);
     if (!response.ok) {
       console.error(`Error: ${response.status} ${response.statusText}`);
@@ -30,7 +32,9 @@ export const getDailyMenu = async (id, lang, day) => {
 };
 export const getWeeklyMenu = async (id, lang) => {
   try {
-    const response = await fetch(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
+    const response = await fetch(
+      `${apiUrlRestaurant}/restaurants/weekly/${id}/${lang}`
+    );
 
     if (!response.ok) {
       console.error(`Error: ${response.status} ${response.statusText}`);

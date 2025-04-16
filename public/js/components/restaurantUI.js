@@ -139,7 +139,7 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
               .map(
                 (leg) => `
                 <li>
-                  Tyyli: ${leg.mode}, Kesto: ${Math.round(
+                  Tapa: ${leg.mode}, Kesto: ${Math.round(
                   leg.duration / 60
                 )} min,
                   Matka: ${leg.distance.toFixed(2)} m

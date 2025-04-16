@@ -1,4 +1,4 @@
-const apiUrl = 'https://10.120.32.93/app/api/v1';
+import {apiUrl} from '../variables';
 
 export const getRoute = async (startLat, startLng, endLat, endLng) => {
   try {

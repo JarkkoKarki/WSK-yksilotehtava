@@ -1,5 +1,5 @@
 import {fetchData} from '../../lib/fetchdata.js';
-import {apiUrl} from './variables.js';
+import {apiUrlRestaurant} from './variables.js';
 import {sortByName} from './utils.js';
 import {
   chooseDayModal,
@@ -61,7 +61,7 @@ function error(err) {
 
 const getRestaurants = async () => {
   try {
-    allRestaurants = await fetchData(apiUrl + '/restaurants');
+    allRestaurants = await fetchData(apiUrlRestaurant + '/restaurants');
     restaurants = [...allRestaurants];
     createTable(restaurants, modal, taulukko, crd);
   } catch (error) {

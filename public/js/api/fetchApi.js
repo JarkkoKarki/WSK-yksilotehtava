@@ -1,8 +1,7 @@
+import {locationUrl} from '../variables';
 export const fetchAddress = async (longitude, latitude) => {
   try {
-    const response = await fetch(
-      `https://10.120.32.93/app/api/v1/api/location/${longitude}/${latitude}`
-    );
+    const response = await fetch(`${locationUrl}/${longitude}/${latitude}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch address: ${response.statusText}`);
     }
