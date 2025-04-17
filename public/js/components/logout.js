@@ -1,28 +1,21 @@
+import {logoutUrl} from '../variables.js';
+
 export const logoutUser = async () => {
   try {
-    const response = await fetch(
-      'https://10.120.32.93/app/api/v1/auth/logout',
-      {
-        method: 'GET',
-      }
-    );
+    const response = await fetch(logoutUrl, {
+      method: 'GET',
+    });
 
     if (response.ok) {
       alert('Kirjauduttu ulos onnistuneesti!');
       localStorage.removeItem('token');
       localStorage.removeItem('username');
       localStorage.removeItem('filename');
-      window.location.href = 'index.html';
+      localStorage.removeItem('id');
     } else {
-      const error = await response.json();
-      alert(`Virhe uloskirjautumisessa: ${error.message}`);
+      alert(`Virhe uloskirjautumisessa: ${errorText}`);
     }
   } catch (error) {
-    console.error('Error during logout:', error);
     alert('Palvelimeen ei saatu yhteyttä.');
   }
-  localStorage.removeItem('token');
-  localStorage.removeItem('username');
-  localStorage.removeItem('filename');
-  localStorage.removeItem('id');
 };

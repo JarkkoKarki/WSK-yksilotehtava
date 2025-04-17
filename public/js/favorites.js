@@ -1,7 +1,7 @@
 import {getWeeklyMenu} from './utils/menu.js';
 import {logoutUser} from './components/logout.js';
 import {fetchData} from '../../lib/fetchdata.js';
-import {apiUrl} from './variables.js';
+import {apiUrlRestaurant} from './variables.js';
 import {fetchFavorites} from './api/fetchFavorites.js';
 
 export let favoritesAll = {};
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
   const favorites = await fetchFavorites();
-  const allRestaurants = await fetchData(`${apiUrl}/restaurants`);
+  const allRestaurants = await fetchData(`${apiUrlRestaurant}/restaurants`);
 
   favorites.forEach((favorite) => {
     const restaurant = allRestaurants.find(
@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   const logoutButton = document.querySelector('.logout');
-  logoutButton.addEventListener('click', () => {
-    logoutUser();
+  logoutButton.addEventListener('click', async () => {
+    await logoutUser();
     window.location.href = 'login.html';
   });
 });

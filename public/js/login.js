@@ -1,6 +1,7 @@
 import {loadProfilePicture} from './api/fetchPicture.js';
 import {logoutUser} from './components/logout.js';
 import {fetchPictureWithId} from './api/fetchPicture.js';
+import {loginUrl} from './variables.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
@@ -23,16 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('password').value;
 
       try {
-        const response = await fetch(
-          'https://10.120.32.93/app/api/v1/auth/login',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username, password}),
-          }
-        );
+        const response = await fetch(loginUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({username, password}),
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -40,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('username', username);
           localStorage.setItem('id', data.user.user_id);
           await fetchPictureWithId(data.user.user_id);
+          window.location.href = 'index.html';
         } else {
           const error = await response.json();
           alert(`Virhe kirjautumisessa: ${error.message}`);
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loadProfilePicture();
 
       logout.addEventListener('click', async () => {
-        logoutUser();
+        await logoutUser();
         window.location.href = 'index.html';
       });
       loginContainer.appendChild(favorites);

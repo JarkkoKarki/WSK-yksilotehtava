@@ -1,4 +1,4 @@
-import {locationUrl} from '../variables.js';
+import {bussStopsUrl, locationUrl} from '../variables.js';
 export const fetchAddress = async (longitude, latitude) => {
   try {
     const response = await fetch(`${locationUrl}/${longitude}/${latitude}`);
@@ -16,7 +16,7 @@ export const fetchAddress = async (longitude, latitude) => {
 export const fetchBussStops = async (longitude, latitude) => {
   try {
     const response = await fetch(
-      `https://10.120.32.93/app/api/v1/buss/stops/${longitude}/${latitude}/500`
+      `${bussStopsUrl}/${longitude}/${latitude}/500`
     );
     if (!response.ok) {
       throw new Error(`Failed to fetch address: ${response.statusText}`);

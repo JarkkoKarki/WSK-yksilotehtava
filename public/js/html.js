@@ -1,6 +1,5 @@
 export function menuHtml(courses) {
   try {
-    console.log('Courses received in menuHtml:', courses);
     let html = '';
     for (const course of courses) {
       if (course.name) {

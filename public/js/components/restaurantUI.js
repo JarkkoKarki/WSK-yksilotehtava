@@ -5,9 +5,9 @@ import {getRoute} from '../api/route.js';
 import {map} from '../components.js';
 import {restaurantModal} from './restaurantModal.js';
 import {menuHtml, menuWeekHtml} from '../html.js';
+import {favoriteUrl} from '../variables.js';
 
 export const createTable = async (restaurants, modal, taulukko, crd) => {
-  console.log(crd);
   if (!crd || !crd.latitude || !crd.longitude) {
     console.error('User coordinates are missing or invalid.');
     modal.innerHTML =
@@ -32,9 +32,7 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
 
   let favorites = [];
   try {
-    const res = await fetch(
-      `https://10.120.32.93/app/api/v1/favorites/${localStorage.getItem('id')}`
-    );
+    const res = await fetch(`${favoriteUrl}/${localStorage.getItem('id')}`);
     favorites = await res.json();
   } catch (e) {
     console.error('Favorites fetch error:', e);

@@ -1,4 +1,4 @@
-import {restaurantModal} from './restaurantModal.js';
+import {favoriteUrl} from '../variables.js';
 
 export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
   const createCell = (text) => {
@@ -29,14 +29,14 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
       }
 
       if (isFavorite) {
-        await fetch(`https://10.120.32.93/app/api/v1/favorites/`, {
+        await fetch(`${favoriteUrl}/`, {
           method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({user_id: userId, restaurant_id: _id}),
         });
         favoriteButton.innerText = 'Add to Favorites';
       } else {
-        await fetch(`https://10.120.32.93/app/api/v1/favorites/`, {
+        await fetch(`${favoriteUrl}/`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({user_id: userId, restaurant_id: _id}),
@@ -44,9 +44,7 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
         favoriteButton.innerText = 'Remove from Favorites';
       }
 
-      const res = await fetch(
-        `https://10.120.32.93/app/api/v1/favorites/${userId}`
-      );
+      const res = await fetch(`${favoriteUrl}/${userId}`);
       favorites = await res.json();
     } catch (error) {
       console.error('Error updating favorites:', error);

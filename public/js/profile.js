@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   const logoutButton = document.querySelector('.logout');
-  logoutButton.addEventListener('click', () => {
-    logoutUser();
+  logoutButton.addEventListener('click', async () => {
+    await logoutUser();
     window.location.href = 'login.html';
   });
 });

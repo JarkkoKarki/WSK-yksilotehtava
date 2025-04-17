@@ -1,5 +1,4 @@
 import {getRouteData} from '../api/route.js';
-import {getRoute} from '../api/route.js';
 
 let currentPolyline = null;
 
