@@ -7,7 +7,6 @@ const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
 let restaurants = [];
 export let allRestaurants = [];
-
 let crd = {};
 
 const options = {
@@ -51,6 +50,7 @@ function error(err) {
 const sortRestaurants = () => {
   restaurants.sort(sortByName);
 };
+
 document.querySelector('#submit').addEventListener('click', async (event) => {
   event.preventDefault();
 
@@ -59,6 +59,7 @@ document.querySelector('#submit').addEventListener('click', async (event) => {
 
   filterAndUpdate(selectedValue, selectedCityValue);
 });
+
 const filterAndUpdate = (selectedValue, selectedCityValue) => {
   if (selectedValue === 'all' && selectedCityValue === 'all') {
     restaurants = [...allRestaurants];

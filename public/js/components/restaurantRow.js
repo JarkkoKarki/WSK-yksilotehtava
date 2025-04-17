@@ -13,6 +13,7 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
   const favoriteTd = document.createElement('td');
 
   const favoriteButton = document.createElement('button');
+  favoriteButton.className = 'favorite-button';
   favoriteButton.innerText = favorites.some((fav) => fav.restaurant_id === _id)
     ? 'Remove from Favorites'
     : 'Add to Favorites';

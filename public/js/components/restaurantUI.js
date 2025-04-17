@@ -100,7 +100,7 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
         buttons.forEach((btn) => {
           btn.addEventListener('click', async (e) => {
             e.preventDefault();
-            modal.innerHTML = '<p>Loading...</p>';
+            modal.innerHTML = '';
 
             if (btn.value === 'week') {
               restaurantModal(r, modal);
