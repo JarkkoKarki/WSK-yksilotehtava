@@ -49,6 +49,8 @@ export const updateMapMarkers = async (userCoords, restaurants) => {
   let minDistance = Infinity,
     closest = null;
 
+  await addBusStops(userLng, userLat);
+
   for (const r of restaurants) {
     const [lng, lat] = r.location.coordinates;
     const dist = Math.hypot(userLat - lat, userLng - lng);

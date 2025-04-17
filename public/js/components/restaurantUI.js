@@ -179,7 +179,7 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
           .join('');
 
         addressSection.innerHTML = `
-          <h2>Routes to ${r.name}</h2>
+          <h2>Reitti kohteeseen: ${r.name}</h2>
           ${routeHtml}
         `;
       } catch (error) {

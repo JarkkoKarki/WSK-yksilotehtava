@@ -17,6 +17,12 @@ body {
 html {
   height: 100%;
   overflow-x: hidden;
+  padding: 0.2em;
+}
+
+a {
+  padding: 1em;
+  margin: 4em;
 }
 
 header {
@@ -478,6 +484,7 @@ dialog::backdrop {
   border-radius: 0.5rem;
   transition: background-color 0.3s ease;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  padding: 0.5em;
 }
 
 .buttons-container {

@@ -1,5 +1,5 @@
 export const normalIcon = L.icon({
-  iconUrl: '../../../lib/leaflet/normal-icon.svg',
+  iconUrl: '../../lib/leaflet/normal-icon.svg',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -7,7 +7,7 @@ export const normalIcon = L.icon({
 });
 
 export const userIcon = L.icon({
-  iconUrl: '../../../lib/leaflet/user-icon.svg',
+  iconUrl: '../../lib/leaflet/user-icon.svg',
   iconSize: [38, 95],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -15,7 +15,7 @@ export const userIcon = L.icon({
 });
 
 export const favoriteIcon = L.icon({
-  iconUrl: '../../../lib/leaflet/favorite-icon.svg',
+  iconUrl: '../../lib/leaflet/favorite-icon.svg',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -23,7 +23,7 @@ export const favoriteIcon = L.icon({
 });
 
 export const bussIcon = L.icon({
-  iconUrl: '../../../lib/leaflet/buss-icon.svg',
+  iconUrl: '../../lib/leaflet/buss-icon.svg',
   iconSize: [10, 15],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -31,7 +31,7 @@ export const bussIcon = L.icon({
 });
 
 export const customIcon = L.icon({
-  iconUrl: '../../../lib/leaflet/red-icon.svg',
+  iconUrl: '../../lib/leaflet/red-icon.svg',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
