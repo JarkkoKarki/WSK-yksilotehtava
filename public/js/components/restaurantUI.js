@@ -7,6 +7,7 @@ import {restaurantModal} from './restaurantModal.js';
 import {menuHtml, menuWeekHtml} from '../html.js';
 
 export const createTable = async (restaurants, modal, taulukko, crd) => {
+  console.log(crd);
   if (!crd || !crd.latitude || !crd.longitude) {
     console.error('User coordinates are missing or invalid.');
     modal.innerHTML =

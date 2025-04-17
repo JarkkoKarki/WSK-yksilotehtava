@@ -1,8 +1,8 @@
-import {apiUrl} from '../variables.js';
+import {apiUrlRestaurant} from '../variables.js';
 
 export const fetchRestaurants = async () => {
   try {
-    const response = await fetch(apiUrl + '/restaurants');
+    const response = await fetch(apiUrlRestaurant + '/restaurants');
     const allRestaurants = await response.json();
     const restaurants = [...allRestaurants];
     return restaurants;

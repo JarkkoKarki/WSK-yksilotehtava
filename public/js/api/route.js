@@ -1,4 +1,4 @@
-import {apiUrl} from '../variables';
+import {apiUrl} from '../variables.js';
 
 export const getRoute = async (startLat, startLng, endLat, endLng) => {
   try {

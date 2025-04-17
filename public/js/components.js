@@ -35,6 +35,7 @@ async function success(pos) {
 
 function error(err) {
   alert('Unable to access your location. Using default location.');
+  crd = {latitude: 60.1699, longitude: 24.9384};
 
   if (!map) {
     map = L.map('map').setView([60.1699, 24.9384], 12);
@@ -51,7 +52,6 @@ function error(err) {
 const sortRestaurants = () => {
   restaurants.sort(sortByName);
 };
-createTable(restaurants, modal, taulukko, crd);
 document.querySelector('#submit').addEventListener('click', async (event) => {
   event.preventDefault();
 

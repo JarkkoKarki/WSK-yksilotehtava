@@ -9,7 +9,6 @@ import {
 import {fetchFavorites} from '../api/fetchFavorites.js';
 import {fetchRestaurants} from '../api/fetchRestaurants.js';
 import {map} from '../components.js';
-import {RestaurantRow} from '../components/restaurantRow.js';
 
 let markers = [];
 
