@@ -1,3 +1,4 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava/badge)](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava)
 
 <img src="/lib/pictures/main.png">
 
