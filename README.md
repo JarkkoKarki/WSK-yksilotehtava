@@ -1,6 +1,6 @@
 ﻿[![CodeFactor](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava/badge)](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava)
 
- [![Validation](https://img.shields.io/badge/View-PDF-blue)](lib/validation/validation.pdf)
+[![Validation](https://img.shields.io/badge/View-PDF-blue)](lib/validation/validation.pdf)
 <br>
 Validation
 <br>
@@ -24,7 +24,7 @@ This project is a web application designed to help users locate student restaura
 
 ### 2. **Profile Management**
 
-- Users can update their profile information, including their username and profile picture.
+- Users can update their profile information, including their username, name, email and profile picture.
 - Profile pictures are uploaded to the backend and displayed across the application.
 - The profile page allows users to preview their profile picture before uploading.
 
