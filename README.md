@@ -147,7 +147,7 @@ This project relies on a backend server to handle various operations. The server
 <br>
 ![Favorites](lib/pictures/p4.png)
 <br>
-![Profile](lib/pictures/p5.png)
+![Profile](lib/pictures/P5.png)
 <br>
 ![Refister](lib/pictures/p6.png)
 <br>
