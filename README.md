@@ -1,8 +1,8 @@
 ﻿[![CodeFactor](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava/badge)](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava)
 
  [![Validation](https://img.shields.io/badge/View-PDF-blue)](lib/validation/validation.pdf)
- validation PDF
-
+<br>
+Validation
 <img src="/lib/pictures/main.png">
 
 # Opiskelijaravintolat
