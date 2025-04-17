@@ -1,4 +1,5 @@
 import {fetchPicture} from '../api/fetchPicture.js';
+import {putUser} from '../api/fetchUser.js';
 import {logoutUser} from '../components/logout.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
       reader.readAsDataURL(file);
     }
   });
-  const h2 = document.querySelector('h1');
-  h2.addEventListener('click', () => {
+  const h1 = document.querySelector('h1');
+  h1.addEventListener('click', () => {
     window.location.href = 'index.html';
   });
 
@@ -48,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('profilePicture', profilePicture);
       }
       localStorage.setItem('username', newUsername);
+
+      await putUser(formData);
       await fetchPicture(formData);
       window.location.href = 'index.html';
     });
