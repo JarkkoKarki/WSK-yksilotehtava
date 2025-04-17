@@ -1,8 +1,8 @@
 import {fetchPicture} from '../api/fetchPicture.js';
-import {putUser} from '../api/fetchUser.js';
+import {fetchName, putUser} from '../api/fetchUser.js';
 import {logoutUser} from '../components/logout.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
   const usernameDisplay = document.getElementById('username');
 
@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const currentUsername = localStorage.getItem('username');
-  usernameDisplay.innerText = currentUsername;
+  const name = await fetchName();
+  usernameDisplay.innerText = name.name;
   const profilePictureInput = document.getElementById('profile-picture');
   const profilePicturePreview = document.getElementById(
     'profile-picture-preview'
@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   h1.addEventListener('click', () => {
     window.location.href = 'index.html';
   });
-
   document
     .getElementById('update-profile-form')
     .addEventListener('submit', async (event) => {
@@ -44,20 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('profile-picture').files[0];
 
       const formData = new FormData();
-      formData.append('username', newUsername);
+      formData.append('name', newUsername);
       if (profilePicture) {
         formData.append('profilePicture', profilePicture);
       }
-      localStorage.setItem('username', newUsername);
 
-      await putUser(formData);
-      await fetchPicture(formData);
-      window.location.href = 'index.html';
+      console.log('FormData being sent:', [...formData.entries()]);
+
+      try {
+        console.log(await putUser(formData));
+      } catch (error) {
+        console.error('Error during profile update:', error);
+      }
     });
-
-  const logoutButton = document.querySelector('.logout');
-  logoutButton.addEventListener('click', async () => {
-    await logoutUser();
-    window.location.href = 'login.html';
-  });
 });
