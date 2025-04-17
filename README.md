@@ -1,7 +1,10 @@
 ﻿[![CodeFactor](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava/badge)](https://www.codefactor.io/repository/github/jarkkokarki/wsk-yksilotehtava)
 
- [![Validation](https://img.shields.io/badge/View-PDF-blue)](lib/validation/Yksilötehtävä-validation-Jarkko-Kärki.pdf)
-
+ [![Validation](https://img.shields.io/badge/View-PDF-blue)](lib/validation/validation.pdf)
+<br>
+Validation
+<br>
+<br>
 <img src="/lib/pictures/main.png">
 
 # Opiskelijaravintolat
@@ -133,3 +136,19 @@ This project relies on a backend server to handle various operations. The server
    git clone https://github.com/JarkkoKarki/WSK-yksilotehtava.git
    cd WSK-yksilotehtava
    ```
+
+## View
+
+![Main View](lib/pictures/p1.png)
+<br>
+![Menu Select](lib/pictures/p2.png)
+<br>
+![Menu](lib/pictures/p3.png)
+<br>
+![Favorites](lib/pictures/p4.png)
+<br>
+![Profile](lib/pictures/P5.png)
+<br>
+![Refister](lib/pictures/p6.png)
+<br>
+![Login](lib/pictures/p7.png)
