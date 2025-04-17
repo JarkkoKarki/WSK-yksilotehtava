@@ -22,8 +22,9 @@ export const getDailyMenu = async (id, lang, day) => {
       createErrorHtml();
       return null;
     }
-  } catch (error) {
+  } catch (e) {
     createErrorHtml();
+    console.warn(e);
     return null;
   }
 };

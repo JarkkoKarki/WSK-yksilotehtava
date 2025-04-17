@@ -13,9 +13,10 @@ export const logoutUser = async () => {
       localStorage.removeItem('filename');
       localStorage.removeItem('id');
     } else {
-      alert(`Virhe uloskirjautumisessa: ${errorText}`);
+      alert(`Virhe uloskirjautumisessa`);
     }
   } catch (error) {
     alert('Palvelimeen ei saatu yhteyttä.');
+    console.warn(error);
   }
 };

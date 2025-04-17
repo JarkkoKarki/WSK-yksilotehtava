@@ -4,13 +4,6 @@ export async function fetchPicture(formData) {
   try {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
-    const payload = JSON.parse(atob(token.split('.')[1]));
-
-    if (id !== payload.user_id.toString()) {
-      console.error('User ID mismatch:', {id, userIdInToken: payload.user_id});
-      alert('Sinulla ei ole oikeuksia.');
-      return;
-    }
 
     const response = await fetch(`${usersUrl}/${id}`, {
       method: 'PUT',

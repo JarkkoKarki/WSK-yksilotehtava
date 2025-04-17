@@ -19,7 +19,7 @@ async function success(pos) {
   crd = pos.coords;
 
   if (!map) {
-    map = L.map('map').setView([crd.latitude, crd.longitude], 15);
+    L.map('map').setView([crd.latitude, crd.longitude], 15);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution:
@@ -34,9 +34,10 @@ async function success(pos) {
 function error(err) {
   alert('Unable to access your location. Using default location.');
   crd = {latitude: 60.1699, longitude: 24.9384};
+  console.warn(err);
 
   if (!map) {
-    map = L.map('map').setView([60.1699, 24.9384], 12);
+    L.map('map').setView([60.1699, 24.9384], 12);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution:

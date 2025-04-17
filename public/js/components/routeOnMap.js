@@ -66,8 +66,6 @@ export const fetchAndDisplayRoute = async (
       console.error('No route details available.');
       return;
     }
-
-    const routeHtml = routeDetails.decodedLegs;
     await drawRouteOnMap(map, startLat, startLng, endLat, endLng);
   } catch (error) {
     console.error('Error fetching and displaying route:', error.message);

@@ -2,7 +2,6 @@ import {favoriteUrl} from '../utils/variables.js';
 
 export const fetchFavorites = async () => {
   try {
-    const userId = localStorage.getItem('id');
     const token = localStorage.getItem('token');
     const response = await fetch(
       `${favoriteUrl}/${localStorage.getItem('id')}`,
