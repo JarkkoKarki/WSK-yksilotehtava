@@ -4,9 +4,7 @@ export function menuHtml(courses) {
     let html = '';
     for (const course of courses) {
       if (course.name) {
-        console.log('html ', course);
         const {name, price, diets} = course;
-        console.log('ruuat: ', {name, price, diets});
         html += `
           <article class="course">
               <p><strong>${name}</strong>,

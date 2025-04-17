@@ -1,8 +1,16 @@
-import L from 'leaflet';
 import {fetchBussStops} from '../api/fetchApi.js';
-import {userIcon, normalIcon, customIcon, bussIcon} from './mapIcons.js';
+import {
+  normalIcon,
+  userIcon,
+  favoriteIcon,
+  bussIcon,
+  customIcon,
+} from './mapIcons.js';
+import {fetchFavorites} from '../api/fetchFavorites.js';
+import {fetchRestaurants} from '../api/fetchRestaurants.js';
+import {map} from '../components.js';
+import {RestaurantRow} from '../components/restaurantRow.js';
 
-let map;
 let markers = [];
 
 export const initMap = (coords) => {
@@ -23,9 +31,13 @@ export const clearMarkers = () => {
   });
 };
 
-export const updateMapMarkers = async (restaurants, userCoords) => {
+export const updateMapMarkers = async (userCoords, restaurants) => {
   clearMarkers();
+  const favorites = await fetchFavorites();
 
+  if (!restaurants) {
+    restaurants = await fetchRestaurants();
+  }
   const userLat = userCoords.latitude;
   const userLng = userCoords.longitude;
   let minDistance = Infinity,
@@ -39,28 +51,39 @@ export const updateMapMarkers = async (restaurants, userCoords) => {
       closest = r;
     }
   }
+  const closestMarker = L.marker(
+    [closest.location.coordinates[1], closest.location.coordinates[0]],
+    {
+      icon: customIcon,
+    }
+  )
+    .bindPopup(closest.name)
+    .addTo(map);
+  markers.push(closestMarker);
 
   const userMarker = L.marker([userLat, userLng], {icon: userIcon})
     .bindPopup('Olet täällä!')
     .addTo(map);
   markers.push(userMarker);
 
-  await addBusStops(userLng, userLat);
-  if (closest) await addBusStops(...closest.location.coordinates.reverse());
+  await addBusStops(
+    closest.location.coordinates[0],
+    closest.location.coordinates[1]
+  );
 
   for (const r of restaurants) {
     const [lng, lat] = r.location.coordinates;
     if (isNaN(lat) || isNaN(lng)) continue;
 
+    const isFavorite = favorites.some((fav) => fav.restaurant_id === r._id);
     const marker = L.marker([lat, lng], {
-      icon: r._id === closest?._id ? customIcon : normalIcon,
+      icon: isFavorite ? favoriteIcon : normalIcon,
     })
       .bindPopup(r.name)
       .addTo(map);
     markers.push(marker);
   }
 };
-
 const addBusStops = async (lng, lat) => {
   try {
     const stops = await fetchBussStops(lng, lat);

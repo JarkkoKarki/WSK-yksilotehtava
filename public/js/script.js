@@ -1,8 +1,6 @@
 import {fetchAddress} from './api/fetchApi.js';
 import {addressHtml} from './html.js';
 import components from './components.js';
-import {RestaurantRow} from './components/restaurantRow.js';
-import {createTable} from './components/restaurantUI.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const main = async () => {

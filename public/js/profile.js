@@ -12,13 +12,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const currentUsername = localStorage.getItem('username');
-  usernameDisplay.value = currentUsername;
+  usernameDisplay.innerText = currentUsername;
+  const profilePictureInput = document.getElementById('profile-picture');
+  const profilePicturePreview = document.getElementById(
+    'profile-picture-preview'
+  );
+
+  profilePictureInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        profilePicturePreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
   document
     .getElementById('update-profile-form')
     .addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const newUsername = document.getElementById('username').value;
+      const newUsername = document.getElementById('username-input').value;
       const profilePicture =
         document.getElementById('profile-picture').files[0];
 

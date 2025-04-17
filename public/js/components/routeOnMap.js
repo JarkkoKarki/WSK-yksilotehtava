@@ -13,7 +13,6 @@ const drawRouteOnMap = async (
 ) => {
   try {
     const routeData = await getRouteData(startLat, startLng, endLat, endLng);
-    console.log('Route Data:', routeData);
 
     if (
       !routeData ||
@@ -63,7 +62,6 @@ export const fetchAndDisplayRoute = async (
 ) => {
   try {
     const routeDetails = await getRouteData(startLat, startLng, endLat, endLng);
-    console.log(routeDetails);
 
     if (!routeDetails || !routeDetails.decodedLegs) {
       console.error('No route details available.');

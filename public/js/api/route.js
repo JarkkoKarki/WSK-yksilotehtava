@@ -11,7 +11,6 @@ export const getRoute = async (startLat, startLng, endLat, endLng) => {
     }
 
     const routeData = await response.json();
-    console.log('Route Data:', routeData);
     return routeData;
   } catch (error) {
     console.error('Error fetching route:', error.message);
@@ -32,7 +31,6 @@ export const getRouteData = async (startLat, startLng, endLat, endLng) => {
     }
 
     const routeData = await response.json();
-    console.log('Route Coordinates Data:', routeData);
     return routeData;
   } catch (error) {
     console.error('Error fetching route coordinates:', error.message);

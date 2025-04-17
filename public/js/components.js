@@ -1,26 +1,14 @@
-import {fetchData} from '../../lib/fetchdata.js';
-import {apiUrl} from './variables.js';
 import {sortByName} from './utils.js';
-import {
-  chooseDayModal,
-  menuHtml,
-  menuWeekHtml,
-  createErrorHtml,
-} from './html.js';
-import {fetchBussStops} from './api/fetchApi.js';
 import {createTable} from './components/restaurantUI.js';
+import {updateMapMarkers} from './map/map.js';
+import {fetchRestaurants} from './api/fetchRestaurants.js';
 
 const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
 let restaurants = [];
-let allRestaurants = [];
+export let allRestaurants = [];
 export var map;
 
-let iconOptions = {
-  iconUrl: '../../lib/leaflet/red-icon.svg',
-  iconSize: [25, 41],
-};
-var customIcon = L.icon(iconOptions);
 let crd = {};
 
 const options = {
@@ -40,7 +28,8 @@ async function success(pos) {
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
   }
-  await getRestaurants();
+  allRestaurants = await fetchRestaurants();
+  createTable(allRestaurants, modal, taulukko, crd);
   updateMapMarkers(crd);
 }
 
@@ -56,177 +45,42 @@ function error(err) {
     }).addTo(map);
   }
 
-  updateMapMarkers();
-}
-
-const getRestaurants = async () => {
-  try {
-    allRestaurants = await fetchData(apiUrl + '/restaurants');
-    restaurants = [...allRestaurants];
-    createTable(restaurants, modal, taulukko, crd);
-  } catch (error) {
-    console.error('Error fetching restaurants:', error.message);
-  }
-};
-
-let markers = [];
-
-function clearMarkers() {
-  markers = markers.filter((marker) => {
-    if (marker.options.icon === userIcon) {
-      return true;
-    }
-    if (map.hasLayer(marker)) {
-      map.removeLayer(marker);
-    }
-    return false;
-  });
+  updateMapMarkers(crd);
 }
 
 const sortRestaurants = () => {
   restaurants.sort(sortByName);
 };
-
-var normalIcon = L.icon({
-  iconUrl: '../../lib/leaflet/normal-icon.svg',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-var userIcon = L.icon({
-  iconUrl: '../../lib/leaflet/user-icon.svg',
-  iconSize: [38, 95],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-async function updateMapMarkers(crd) {
-  if (!map) {
-    console.error('Map is not initialized.');
-    return;
-  }
-
-  clearMarkers();
-
-  if (!restaurants || restaurants.length === 0) {
-    return;
-  }
-
-  const userLat = crd.latitude;
-  const userLng = crd.longitude;
-
-  let closestRestaurantId = null;
-  let minDistance = Infinity;
-  let closestlng = null;
-  let closestlat = null;
-
-  for (const restaurant of restaurants) {
-    const restaurantLat = restaurant.location.coordinates[1];
-    const restaurantLng = restaurant.location.coordinates[0];
-
-    const distance = Math.sqrt(
-      Math.pow(userLat - restaurantLat, 2) +
-        Math.pow(userLng - restaurantLng, 2)
-    );
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestRestaurantId = restaurant._id;
-      closestlat = restaurantLat;
-      closestlng = restaurantLng;
-    }
-  }
-
-  const userMarker = L.marker([userLat, userLng], {
-    icon: userIcon,
-  })
-    .bindPopup('Olet täällä!')
-    .addTo(map);
-  markers.push(userMarker);
-
-  if (closestlat && closestlng) {
-    await bussStops(closestlng, closestlat);
-  }
-
-  await bussStops(userLng, userLat);
-
-  for (const restaurant of restaurants) {
-    const lat = restaurant.location.coordinates[1];
-    const lng = restaurant.location.coordinates[0];
-
-    if (isNaN(lat) || isNaN(lng)) {
-      continue;
-    }
-    const marker = L.marker([lat, lng], {
-      icon: restaurant._id === closestRestaurantId ? customIcon : normalIcon,
-    })
-      .addTo(map)
-      .bindPopup(restaurant.name);
-    markers.push(marker);
-  }
-}
-
-document.querySelector('#submit').addEventListener('click', (event) => {
+createTable(restaurants, modal, taulukko, crd);
+document.querySelector('#submit').addEventListener('click', async (event) => {
   event.preventDefault();
 
   const selectedValue = document.querySelector('#provider').value.toLowerCase();
   const selectedCityValue = document.querySelector('#city').value.toLowerCase();
 
+  filterAndUpdate(selectedValue, selectedCityValue);
+});
+const filterAndUpdate = (selectedValue, selectedCityValue) => {
   if (selectedValue === 'all' && selectedCityValue === 'all') {
     restaurants = [...allRestaurants];
   } else {
     restaurants = allRestaurants.filter((restaurant) => {
+      const company = restaurant.company?.toLowerCase() || '';
+      const city = restaurant.city?.toLowerCase() || '';
       return (
-        (selectedValue === 'all' ||
-          restaurant.company.toLowerCase() === selectedValue) &&
-        (selectedCityValue === 'all' ||
-          restaurant.city.toLowerCase() === selectedCityValue)
+        (selectedValue === 'all' || company === selectedValue) &&
+        (selectedCityValue === 'all' || city === selectedCityValue)
       );
     });
   }
-
-  updateMapMarkers(crd);
+  updateMapMarkers(crd, restaurants);
   createTable(restaurants, modal, taulukko, crd);
-});
-
-let selectedRestaurant = null;
+};
 
 export default {
-  getRestaurants,
   sortRestaurants,
   success,
   options,
   error,
   restaurants,
 };
-
-async function bussStops(lng, lat) {
-  var bussIcon = L.icon({
-    iconUrl: '../../lib/leaflet/buss-icon.svg',
-    iconSize: [10, 15],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
-
-  try {
-    const bussStops = await fetchBussStops(lng, lat);
-    for (const bussStop of bussStops) {
-      const stopName = bussStop.description;
-      const stopLat = bussStop.latitude;
-      const stopLng = bussStop.longitude;
-
-      const bussMarker = L.marker([stopLat, stopLng], {
-        icon: bussIcon,
-      })
-        .bindPopup(`${stopName}`)
-        .addTo(map);
-      markers.push(bussMarker);
-    }
-  } catch (error) {
-    console.error('Error fetching bus stops:', error);
-  }
-}

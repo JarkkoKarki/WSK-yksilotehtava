@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log('data: ', data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', username);
           localStorage.setItem('id', data.user.user_id);
@@ -56,6 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (token) {
       loginContainer.innerHTML = '';
 
+      const favorites = document.createElement('a');
+      favorites.href = 'favorites.html';
+      favorites.textContent = 'Suosikit';
+      favorites.classList.add('link');
+
       const profile = document.createElement('a');
       profile.href = 'profile.html';
       profile.textContent = 'Muokkaa Profiilia';
@@ -71,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutUser();
         window.location.href = 'index.html';
       });
-
+      loginContainer.appendChild(favorites);
       loginContainer.appendChild(profile);
       loginContainer.appendChild(logout);
     } else {

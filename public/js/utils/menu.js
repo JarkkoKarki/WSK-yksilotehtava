@@ -4,7 +4,6 @@ import {createErrorHtml} from '../html.js';
 export const getDailyMenu = async (id, lang, day) => {
   try {
     const response = await fetch(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
-    console.log(response);
     if (!response.ok) {
       console.error(`Error: ${response.status} ${response.statusText}`);
       createErrorHtml();
@@ -12,10 +11,8 @@ export const getDailyMenu = async (id, lang, day) => {
     }
 
     const menu = await response.json();
-    console.log('Daily Menu:', menu);
 
     if (menu && menu.days) {
-      console.log(menu);
       return menu.days[day];
     } else {
       console.warn('Not menu for the chosen day.');
@@ -23,7 +20,6 @@ export const getDailyMenu = async (id, lang, day) => {
       return null;
     }
   } catch (error) {
-    console.log('Error fetching daily menu:', error.message);
     createErrorHtml();
     return null;
   }
@@ -38,7 +34,6 @@ export const getWeeklyMenu = async (id, lang) => {
       return null;
     }
     const menu = await response.json();
-    console.log('Weekly Menu:', menu);
 
     if (menu && menu.days && menu.days.length > 0) {
       return menu.days;

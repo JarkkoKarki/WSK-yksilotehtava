@@ -29,7 +29,3 @@ export const fetchBussStops = async (longitude, latitude) => {
     throw error;
   }
 };
-
-console.log(
-  'https://10.120.32.93/app/api/v1/buss/stops/24.93/60.199/500 endpoint for Buss stops'
-);
