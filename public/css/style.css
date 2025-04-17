@@ -489,6 +489,10 @@ dialog::backdrop {
 }
 
 .buttons-container button:first-child {
+  margin-bottom: 4rem !important;
+}
+
+.buttons-container button:nth-child(2) {
   margin-bottom: 2rem !important;
 }
 

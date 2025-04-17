@@ -21,7 +21,7 @@ export function restaurantModal(
   companyNameP.innerText = `Ravintola: ${company}`;
 
   const closeButton = document.createElement('button');
-  closeButton.innerText = 'Close';
+  closeButton.innerText = 'Sulje';
   closeButton.style.marginTop = '1rem';
   closeButton.style.cursor = 'pointer';
   closeButton.style.position = 'absolute';

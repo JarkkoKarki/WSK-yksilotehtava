@@ -78,10 +78,19 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
         const buttonsContainer = document.createElement('div');
         buttonsContainer.classList.add('buttons-container');
 
+        const closeButton = document.createElement('button');
+        closeButton.innerText = 'Sulje';
+        buttonsContainer.appendChild(closeButton);
+
+        closeButton.addEventListener(
+          'click',
+          () => (window.location.href = 'index.html')
+        );
+
         const weekButton = document.createElement('button');
         weekButton.classList.add('day');
         weekButton.value = 'week';
-        weekButton.innerText = 'Show Full Week';
+        weekButton.innerText = 'Koko viikko';
         buttonsContainer.appendChild(weekButton);
 
         weeklyMenu.forEach((day, index) => {

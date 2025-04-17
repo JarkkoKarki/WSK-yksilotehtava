@@ -15,8 +15,8 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
   const favoriteButton = document.createElement('button');
   favoriteButton.className = 'favorite-button';
   favoriteButton.innerText = favorites.some((fav) => fav.restaurant_id === _id)
-    ? 'Remove from Favorites'
-    : 'Add to Favorites';
+    ? 'Poista suosikeista'
+    : 'Lisää suosikiksi';
 
   favoriteButton.addEventListener('click', async (event) => {
     event.stopPropagation();
@@ -24,8 +24,8 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
       const userId = localStorage.getItem('id');
       const isFavorite = favorites.some((fav) => fav.restaurant_id === _id);
       if (!userId) {
-        alert('Cannot favorite restaurants for guests');
-        favoriteButton.innerText = 'Add to Favorites';
+        alert('Kirjaudu sisään lisätäksesi ravintola suosikkeihin');
+        favoriteButton.innerText = 'Lisää suosikiksi';
         document.location.href = 'index.html';
       }
 
@@ -35,14 +35,14 @@ export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({user_id: userId, restaurant_id: _id}),
         });
-        favoriteButton.innerText = 'Add to Favorites';
+        favoriteButton.innerText = 'Lisää suosikiksi';
       } else {
         await fetch(`${favoriteUrl}/`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({user_id: userId, restaurant_id: _id}),
         });
-        favoriteButton.innerText = 'Remove from Favorites';
+        favoriteButton.innerText = 'Poista suosikeista';
       }
 
       const res = await fetch(`${favoriteUrl}/${userId}`);

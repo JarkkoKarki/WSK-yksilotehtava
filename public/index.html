@@ -12,10 +12,11 @@
         <script src="./js/pages/login.js" type="module"></script>
         <script src="./js/api/fetchPicture.js" type="module"></script>
         <script type="module" src="js/components/components.js"></script>
+				<link rel="icon" href="../lib/pictures/fav-icon.svg" type="image/x-icon">
     </head>
     <body>
         <header>
-            <img id="profile-picture" alt="Profiilikuva" class="profile-pic" src="../lib/pictures/main.png">
+            <img id="profile-picture" alt="Profiilikuva" class="profile-pic" src="../lib/pictures/placeholder.svg">
             <h1>Opiskelijaravintolat</h1>
             <div class="login">
                 <a href="login.html">Kirjaudu</a>
@@ -34,7 +35,7 @@
                         <option value="Vantaa">Vantaa</option>
                     </select>
 
-                    <label for="provider">Palveluntarjoaja:</label>
+                    <label for="provider">Ravintola:</label>
                     <select id="provider" name="provider">
                         <option value="all" id="show-all">Kaikki</option>
                         <option value="sodexo" id="sodexo">sodexo</option>
@@ -52,7 +53,6 @@
             <section class="restaurant-list">
                 <div class="restaurant-div">
                     <h2>Ravintolat</h2>
-                    <h3>Search</h3>
                 </div>
                 <div class="table-container">
                     <table class="restaurant" id="target">
