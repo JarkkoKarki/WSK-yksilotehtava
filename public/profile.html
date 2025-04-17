@@ -20,12 +20,16 @@
         <h2>Tervetuloa, <span id="username"></span>!</h2>
         <form id="update-profile-form" class="profile-form">
           <div class="form-group">
-            <label for="username-input">Nimi:</label>
-            <input type="text" id="username-input" name="username" required>
+            <label for="username-input">Käyttäjänimi:</label>
+            <input type="text" id="username-input" name="username">
+						<label for="name-input">Käyttäjänimi:</label>
+            <input type="text" id="name-input" name="name">
+						<label for="email-input">Sähköposti:</label>
+            <input type="text" id="email-input" name="email">
           </div>
           <div class="form-group">
             <label for="profile-picture">Lisää profiilikuva:</label>
-            <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
+            <input type="file" id="profile-picture" name="profile-picture" accept="image/*" required>
             <img src="../lib/pictures/placeholder.svg" id="profile-picture-preview" class="profile-pic" alt="Profiilikuva esikatselu">
           </div>
           <button type="submit" class="btn">Päivitä tiedot</button>

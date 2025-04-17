@@ -41,9 +41,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       const newUsername = document.getElementById('username-input').value;
       const profilePicture =
         document.getElementById('profile-picture').files[0];
+      const newEmail = document.getElementById('email-input').value;
+      const newName = document.getElementById('name-input').value;
 
       const formData = new FormData();
-      formData.append('name', newUsername);
+      if (newUsername) {
+        formData.append('username', newUsername);
+      }
+      if (newName) {
+        formData.append('name', newName);
+      }
+      if (newEmail) {
+        formData.append('email', newEmail);
+      }
+
       if (profilePicture) {
         formData.append('profilePicture', profilePicture);
       }
