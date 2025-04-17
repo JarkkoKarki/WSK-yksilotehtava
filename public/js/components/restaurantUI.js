@@ -66,26 +66,26 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
         ).catch((error) => {
           console.error('Error displaying route on map:', error.message);
         });
+        const closeButton = document.createElement('button');
+        closeButton.innerText = 'Sulje';
 
         const weeklyMenu = await weeklyMenuPromise;
 
         if (!weeklyMenu || weeklyMenu.length === 0) {
           console.error('No menu data available for this restaurant.');
-          modal.innerHTML = '<p>No menu available for this week.</p>';
+          modal.innerHTML = '<p>Ruokalistaa ei saatavilla</p>';
+          modal.appendChild(closeButton);
+
+          closeButton.addEventListener('click', () => modal.close());
           return;
         }
 
         const buttonsContainer = document.createElement('div');
         buttonsContainer.classList.add('buttons-container');
 
-        const closeButton = document.createElement('button');
-        closeButton.innerText = 'Sulje';
         buttonsContainer.appendChild(closeButton);
 
-        closeButton.addEventListener(
-          'click',
-          () => (window.location.href = 'index.html')
-        );
+        closeButton.addEventListener('click', () => modal.close());
 
         const weekButton = document.createElement('button');
         weekButton.classList.add('day');
@@ -133,13 +133,13 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
             }
           });
         });
-
         const routeData = await getRoute(
           userLat,
           userLng,
           restaurantLat,
           restaurantLng
         );
+
         const routeHtml = routeData.edges
           .map((edge, index) => {
             const {start, end, legs} = edge.node;
@@ -147,9 +147,13 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
               .map(
                 (leg) => `
                 <li>
-                  Tapa: ${leg.mode}, Kesto: ${Math.round(
-                  leg.duration / 60
-                )} min,
+                  Tapa: ${
+                    leg.mode === 'WALK'
+                      ? 'Kävely'
+                      : leg.mode === 'RAIL'
+                      ? 'Juna'
+                      : 'Metro'
+                  }, Kesto: ${Math.round(leg.duration / 60)} min,
                   Matka: ${leg.distance.toFixed(2)} m
                   <br />
                   Aloitus: ${new Date(
@@ -180,7 +184,11 @@ export const createTable = async (restaurants, modal, taulukko, crd) => {
         `;
       } catch (error) {
         console.error('Error fetching menu or route data:', error.message);
-        modal.innerHTML = '<p>Failed to load data. Please try again later.</p>';
+        modal.appendChild(closeButton);
+
+        closeButton.addEventListener('click', () => modal.close());
+        modal.innerHTML =
+          '<p>Failed to load data. Please try again later.</p> <button class=close-button>Close</button>';
       }
     });
   });

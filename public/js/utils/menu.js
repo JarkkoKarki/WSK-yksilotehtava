@@ -6,7 +6,6 @@ export const getDailyMenu = async (id, lang, day) => {
     const response = await fetch(
       `${apiUrlRestaurant}/restaurants/weekly/${id}/${lang}`
     );
-    console.log(response);
     if (!response.ok) {
       console.error(`Error: ${response.status} ${response.statusText}`);
       createErrorHtml();
