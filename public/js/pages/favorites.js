@@ -1,8 +1,8 @@
-import {getWeeklyMenu} from './utils/menu.js';
-import {logoutUser} from './components/logout.js';
-import {fetchData} from '../../lib/fetchdata.js';
-import {apiUrlRestaurant} from './variables.js';
-import {fetchFavorites} from './api/fetchFavorites.js';
+import {getWeeklyMenu} from '../utils/menu.js';
+import {logoutUser} from '../components/logout.js';
+import {fetchData} from '../../../lib/fetchdata.js';
+import {apiUrlRestaurant} from '../utils/variables.js';
+import {fetchFavorites} from '../api/fetchFavorites.js';
 
 export let favoritesAll = {};
 

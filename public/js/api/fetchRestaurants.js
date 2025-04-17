@@ -1,4 +1,4 @@
-import {apiUrlRestaurant} from '../variables.js';
+import {apiUrlRestaurant} from '../utils/variables.js';
 
 export const fetchRestaurants = async () => {
   try {

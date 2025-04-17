@@ -1,4 +1,4 @@
-import {bussStopsUrl, locationUrl} from '../variables.js';
+import {bussStopsUrl, locationUrl} from '../utils/variables.js';
 export const fetchAddress = async (longitude, latitude) => {
   try {
     const response = await fetch(`${locationUrl}/${longitude}/${latitude}`);

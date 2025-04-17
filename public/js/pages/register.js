@@ -1,4 +1,4 @@
-import {usersUrl} from './variables.js';
+import {usersUrl} from '../utils/variables.js';
 
 const RegisterUser = async () => {
   document.addEventListener('DOMContentLoaded', () => {

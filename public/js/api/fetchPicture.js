@@ -1,4 +1,4 @@
-import {profilePictureUrl, usersUrl} from '../variables.js';
+import {profilePictureUrl, usersUrl} from '../utils/variables.js';
 
 export async function fetchPicture(formData) {
   try {

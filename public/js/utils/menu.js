@@ -1,5 +1,5 @@
-import {apiUrlRestaurant} from '../variables.js';
-import {createErrorHtml} from '../html.js';
+import {apiUrlRestaurant} from './variables.js';
+import {createErrorHtml} from '../components/html.js';
 
 export const getDailyMenu = async (id, lang, day) => {
   try {

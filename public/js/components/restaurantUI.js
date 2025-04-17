@@ -2,10 +2,10 @@ import {RestaurantRow} from './restaurantRow.js';
 import {getWeeklyMenu, getDailyMenu} from '../utils/menu.js';
 import {fetchAndDisplayRoute} from './routeOnMap.js';
 import {getRoute} from '../api/route.js';
-import {map} from '../components.js';
+import {map} from '../../js/map/map.js';
 import {restaurantModal} from './restaurantModal.js';
-import {menuHtml, menuWeekHtml} from '../html.js';
-import {favoriteUrl} from '../variables.js';
+import {menuHtml, menuWeekHtml} from './html.js';
+import {favoriteUrl} from '../utils/variables.js';
 
 export const createTable = async (restaurants, modal, taulukko, crd) => {
   if (!crd || !crd.latitude || !crd.longitude) {

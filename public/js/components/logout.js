@@ -1,4 +1,4 @@
-import {logoutUrl} from '../variables.js';
+import {logoutUrl} from '../utils/variables.js';
 
 export const logoutUser = async () => {
   try {

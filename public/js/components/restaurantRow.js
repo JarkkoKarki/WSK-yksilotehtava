@@ -1,4 +1,4 @@
-import {favoriteUrl} from '../variables.js';
+import {favoriteUrl} from '../utils/variables.js';
 
 export const RestaurantRow = ({name, address, city, _id}, tr, favorites) => {
   const createCell = (text) => {

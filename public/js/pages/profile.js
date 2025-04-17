@@ -1,5 +1,5 @@
-import {fetchPicture} from '../js/api/fetchPicture.js';
-import {logoutUser} from './components/logout.js';
+import {fetchPicture} from '../api/fetchPicture.js';
+import {logoutUser} from '../components/logout.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');

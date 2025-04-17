@@ -8,16 +8,23 @@ import {
 } from './mapIcons.js';
 import {fetchFavorites} from '../api/fetchFavorites.js';
 import {fetchRestaurants} from '../api/fetchRestaurants.js';
-import {map} from '../components.js';
-
+export let map;
 let markers = [];
 
-export const initMap = (coords) => {
-  map = L.map('map').setView([coords.latitude, coords.longitude], 15);
+export const initMap = ({latitude, longitude}) => {
+  if (map) {
+    console.warn('Map is already initialized.');
+    return map;
+  }
+
+  map = L.map('map').setView([latitude, longitude], 15);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors',
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
+
+  return map;
 };
 
 export const getMap = () => map;

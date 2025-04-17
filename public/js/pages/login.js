@@ -1,7 +1,7 @@
-import {loadProfilePicture} from './api/fetchPicture.js';
-import {logoutUser} from './components/logout.js';
-import {fetchPictureWithId} from './api/fetchPicture.js';
-import {loginUrl} from './variables.js';
+import {loadProfilePicture} from '../api/fetchPicture.js';
+import {logoutUser} from '../components/logout.js';
+import {fetchPictureWithId} from '../api/fetchPicture.js';
+import {loginUrl} from '../utils/variables.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');

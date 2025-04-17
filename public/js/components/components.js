@@ -1,13 +1,12 @@
-import {sortByName} from './utils.js';
-import {createTable} from './components/restaurantUI.js';
-import {updateMapMarkers} from './map/map.js';
-import {fetchRestaurants} from './api/fetchRestaurants.js';
+import {sortByName} from '../utils/utils.js';
+import {createTable} from './restaurantUI.js';
+import {updateMapMarkers, map} from '../map/map.js';
+import {fetchRestaurants} from '../api/fetchRestaurants.js';
 
 const taulukko = document.querySelector('#target');
 const modal = document.querySelector('#modal');
 let restaurants = [];
 export let allRestaurants = [];
-export var map;
 
 let crd = {};
 
