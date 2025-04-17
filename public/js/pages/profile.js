@@ -59,10 +59,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         formData.append('profilePicture', profilePicture);
       }
 
-      console.log('FormData being sent:', [...formData.entries()]);
-
       try {
-        console.log(await putUser(formData));
+        await putUser(formData);
+        window.location.href = 'index.html';
       } catch (error) {
         console.error('Error during profile update:', error);
       }
