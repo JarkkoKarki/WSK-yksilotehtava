@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
       reader.readAsDataURL(file);
     }
   });
+  const h2 = document.querySelector('h1');
+  h2.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
 
   document
     .getElementById('update-profile-form')

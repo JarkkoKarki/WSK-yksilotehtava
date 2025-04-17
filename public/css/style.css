@@ -491,3 +491,11 @@ dialog::backdrop {
 .buttons-container button:first-child {
   margin-bottom: 2rem !important;
 }
+
+button {
+  background-color: #ff6f61;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+}
