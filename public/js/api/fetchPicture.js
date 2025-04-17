@@ -31,7 +31,6 @@ export async function fetchPicture(formData) {
 export async function fetchPictureWithId(id) {
   try {
     const token = localStorage.getItem('token');
-    const payload = JSON.parse(atob(token.split('.')[1]));
 
     const response = await fetch(`${usersUrl}/${id}`, {
       method: 'GET',
