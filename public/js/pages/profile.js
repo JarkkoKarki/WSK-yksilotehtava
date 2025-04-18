@@ -1,4 +1,3 @@
-import {fetchPicture} from '../api/fetchPicture.js';
 import {fetchName, putUser} from '../api/fetchUser.js';
 import {logoutUser} from '../components/logout.js';
 
