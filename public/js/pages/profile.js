@@ -66,4 +66,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error during profile update:', error);
       }
     });
+  const logoutButton = document.querySelector('.logout');
+  logoutButton.addEventListener('click', async () => {
+    await logoutUser();
+    window.location.href = 'index.html';
+  });
 });
